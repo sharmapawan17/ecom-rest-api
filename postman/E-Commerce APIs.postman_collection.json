@@ -1,0 +1,131 @@
+{
+	"variables": [],
+	"info": {
+		"name": "E-Commerce APIs",
+		"_postman_id": "ea616fad-ec0f-cfd4-8865-ab43f6967047",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTHENTICATE",
+			"request": {
+				"url": "localhost:8080/authenticate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"codeuser\",\n\t\"password\":\"passcode\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER USER",
+			"request": {
+				"url": "localhost:8080/user/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"kis@gmail.com\",\n\t\"password\":\"123456\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE PRODUCT",
+			"request": {
+				"url": "localhost:8080/product",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwMjI2MzMsImlhdCI6MTU4MTAwNDYzM30.JRheM0rzax7hlldVe5stxLv9RGB2z8BJKY_OgWpFcZCe-OgZY60Cbst-e7PupGgr_Mo1H3WiahRLoctPeUbzLw",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Lux\",\n\t\"price\": \"12.90\",\n\t\"description\": \"Soap product\",\n\t\"productGroup\": {\n\t\t\"groupName\": \"ABC\",\n\t\t\"price\": \"1.2\"\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET PRODUCT",
+			"request": {
+				"url": "localhost:8080/product/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwMjI2MzMsImlhdCI6MTU4MTAwNDYzM30.JRheM0rzax7hlldVe5stxLv9RGB2z8BJKY_OgWpFcZCe-OgZY60Cbst-e7PupGgr_Mo1H3WiahRLoctPeUbzLw",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UPLOAD PRODUCT IMAGE",
+			"request": {
+				"url": "localhost:8080/product/3/uploadimage",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwNjQzNzksImlhdCI6MTU4MTA0NjM3OX0.F-o-YpJavjFbH_2f1kMfd-J7QSFIuHGo_NjqhpPAaRuHqTUfqpSUskCcJuUjgZI01Sh2_l_ow17fxkFnc4DThA",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": "",
+							"description": "",
+							"type": "file"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
