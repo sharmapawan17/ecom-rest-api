@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/product")
@@ -36,13 +39,19 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('1')")
     public Product create(@RequestBody @Valid Product product) {
         return ecommerceService.saveProduct(product);
     }
 
     @GetMapping(value = "/{id}")
     public Product get(@PathVariable("id") long id) {
-        return ecommerceService.getProduct(id);
+        return  ecommerceService.getProduct(id);
+    }
+
+    @GetMapping
+    public Page<Product> getAll() {
+        return  ecommerceService.getAllProducts();
     }
 
     @PostMapping(value = "/{id}")
@@ -64,12 +73,15 @@ public class ProductController {
         return ecommerceService.addProductImage(id, filename);
     }
 
+    @GetMapping("/{id}/images")
+    public List<ProductImage> viewImages(@PathVariable("id") String productId){
+        return ecommerceService.getProductImages(Long.parseLong(productId));
+    }
+
     @GetMapping("/image/{id}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable("id") long id) {
-
-        List<ProductImage> productImages = ecommerceService.getProductImages(id);
-        ProductImage image = productImages.stream().findFirst().get();
+    public ResponseEntity<Resource> serveFile(@PathVariable("id") long imageId) {
+        ProductImage image = ecommerceService.getImage(imageId);
         // Relative path to StorageProperties.rootLocation
         String path = "product-images/" + image.getProductId() + "/";
 

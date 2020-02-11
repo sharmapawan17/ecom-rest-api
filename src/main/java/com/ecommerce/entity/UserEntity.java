@@ -1,37 +1,45 @@
 package com.ecommerce.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
 public class UserEntity {
-
-    private Integer id;
-    private String name;
-    private String email;
-    private String password;
-    private String accessToken;
-    private String created;//Todo - Date type...
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
+    private long id;
+    private String firstname;
+    private String lastname;
+    @Column(unique = true)
+    private String email;
+    private String password;
+
+    @Column(name = "create_date", updatable = false)
+    private Date createDate;
+
+    @Column(name = "update_date")
+    private Date updateDate;
+
+    @PrePersist
+    protected void prePersist(){
+        if (createDate == null) {
+            createDate = new Date();
+        }
+        updateDate = new Date();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(unique = true)
     public String getEmail() {
         return email;
     }
@@ -48,20 +56,35 @@ public class UserEntity {
         this.password = password;
     }
 
-    @Column(name = "access_token")
-    public String getAccessToken() {
-        return accessToken;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public String getCreated() {
-        return created;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

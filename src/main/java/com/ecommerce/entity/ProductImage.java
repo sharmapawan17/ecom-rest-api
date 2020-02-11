@@ -8,6 +8,7 @@ public class ProductImage {
     private long id;
     private long productId;
     private String path;
+    private String link;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,13 @@ public class ProductImage {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

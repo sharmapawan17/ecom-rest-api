@@ -9,9 +9,13 @@ import com.ecommerce.repository.OrderRepository;
 import com.ecommerce.repository.ProductImageRepository;
 import com.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EcommerceService {
@@ -26,10 +30,10 @@ public class EcommerceService {
     private ProductImageRepository productImageRepository;
     @Autowired
     private GroupRepository groupRepository;
-
-    public List<Product> getProducts() {
-        return productRepository.findAll();
-    }
+    @Value("${app.host}")
+    private String HOST;
+    @Value("${app.port}")
+    private String PORT;
 
     public Product getProduct(long id) {
         return productRepository.findById(id).get();
@@ -59,11 +63,9 @@ public class EcommerceService {
         return "";
     }
 
-    public List<ProductImage> getProductImages(long id) {
+    public ProductImage getImage(long id) {
         //todo fetch only given products images from DB
-        List<ProductImage> productImages = productImageRepository.findAll();
-        productImages.stream().filter(productImage -> productImage.getId() != id);
-        return productImages;
+        return productImageRepository.findById(id).get();
     }
 
     public List<ProductGroup> getGroups() {
@@ -80,5 +82,16 @@ public class EcommerceService {
 
     public void deleteGroup(long id) {
         groupRepository.deleteById(id);
+    }
+
+    public List<ProductImage> getProductImages(long productId) {
+        List<ProductImage> images =  productImageRepository.findAll();
+        images = images.stream().filter(image -> image.getProductId() == productId).collect(Collectors.toList());
+        images.forEach(image -> image.setLink("http://"+HOST+":"+PORT+"/product/image/"+ image.getId()));
+        return images;
+    }
+
+    public Page<Product> getAllProducts() {
+        return productRepository.findAll(PageRequest.of(0,2));
     }
 }

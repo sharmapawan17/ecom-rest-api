@@ -3,7 +3,6 @@ package com.ecommerce.cart;
 public class CartItem {
 
     private long productId;
-    private long variantId;
     private int quantity;
 
     public long getProductId() {
@@ -12,14 +11,6 @@ public class CartItem {
 
     public void setProductId(long productId) {
         this.productId = productId;
-    }
-
-    public long getVariantId() {
-        return variantId;
-    }
-
-    public void setVariantId(long variantId) {
-        this.variantId = variantId;
     }
 
     public int getQuantity() {

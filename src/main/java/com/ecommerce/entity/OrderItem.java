@@ -13,7 +13,6 @@ public class OrderItem {
 
     private Order order;
     private Product product;
-    private GroupVariant groupVariant;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,15 +52,5 @@ public class OrderItem {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "product_variant_id")
-    public GroupVariant getGroupVariant() {
-        return groupVariant;
-    }
-
-    public void setGroupVariant(GroupVariant groupVariant) {
-        this.groupVariant = groupVariant;
     }
 }

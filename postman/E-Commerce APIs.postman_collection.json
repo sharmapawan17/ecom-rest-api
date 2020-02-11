@@ -60,7 +60,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwMjI2MzMsImlhdCI6MTU4MTAwNDYzM30.JRheM0rzax7hlldVe5stxLv9RGB2z8BJKY_OgWpFcZCe-OgZY60Cbst-e7PupGgr_Mo1H3WiahRLoctPeUbzLw",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzMjQzMDcsImlhdCI6MTU4MTMwNjMwN30.38Mu4BixQ_6zHY40VTVKPBKdxND-0uLM-L5weXNU9WWP9iqn93kfvaDUwHlHjzg_KlTXez4jWzXPFBhCarQvHQ",
 						"description": ""
 					}
 				],
@@ -75,7 +75,7 @@
 		{
 			"name": "GET PRODUCT",
 			"request": {
-				"url": "localhost:8080/product/1",
+				"url": "localhost:8080/product/3",
 				"method": "GET",
 				"header": [
 					{
@@ -85,7 +85,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwMjI2MzMsImlhdCI6MTU4MTAwNDYzM30.JRheM0rzax7hlldVe5stxLv9RGB2z8BJKY_OgWpFcZCe-OgZY60Cbst-e7PupGgr_Mo1H3WiahRLoctPeUbzLw",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzMjQzMDcsImlhdCI6MTU4MTMwNjMwN30.38Mu4BixQ_6zHY40VTVKPBKdxND-0uLM-L5weXNU9WWP9iqn93kfvaDUwHlHjzg_KlTXez4jWzXPFBhCarQvHQ",
 						"description": ""
 					}
 				],
@@ -97,7 +97,7 @@
 		{
 			"name": "UPLOAD PRODUCT IMAGE",
 			"request": {
-				"url": "localhost:8080/product/3/uploadimage",
+				"url": "localhost:8080/product/11/uploadimage",
 				"method": "POST",
 				"header": [
 					{
@@ -108,7 +108,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEwNjQzNzksImlhdCI6MTU4MTA0NjM3OX0.F-o-YpJavjFbH_2f1kMfd-J7QSFIuHGo_NjqhpPAaRuHqTUfqpSUskCcJuUjgZI01Sh2_l_ow17fxkFnc4DThA",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzNjI5NTIsImlhdCI6MTU4MTM0NDk1Mn0.VTWLziEHlnxwNAdIhUoke1-LiHhmqA0_iggh4R3XZ92N15USWP0nKD9xtbqwoMEhdpJd2AnVrAAoTzAEsOK7Zg",
 						"description": ""
 					}
 				],
@@ -117,11 +117,201 @@
 					"formdata": [
 						{
 							"key": "file",
-							"value": "",
 							"description": "",
-							"type": "file"
+							"type": "file",
+							"src": "1f1ca73f-87d9-4dde-9b07-8004a129c7db.jpg"
 						}
 					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "IMAGES FOR PRODUCT",
+			"request": {
+				"url": "localhost:8080/product/11/images",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzNjI5NTIsImlhdCI6MTU4MTM0NDk1Mn0.VTWLziEHlnxwNAdIhUoke1-LiHhmqA0_iggh4R3XZ92N15USWP0nKD9xtbqwoMEhdpJd2AnVrAAoTzAEsOK7Zg",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET IMAGE",
+			"request": {
+				"url": "localhost:8080/product/image/4",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzNjI5NTIsImlhdCI6MTU4MTM0NDk1Mn0.VTWLziEHlnxwNAdIhUoke1-LiHhmqA0_iggh4R3XZ92N15USWP0nKD9xtbqwoMEhdpJd2AnVrAAoTzAEsOK7Zg",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE NEW AUTHORITY",
+			"request": {
+				"url": "localhost:8080/user/authority",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzMjQzMDcsImlhdCI6MTU4MTMwNjMwN30.38Mu4BixQ_6zHY40VTVKPBKdxND-0uLM-L5weXNU9WWP9iqn93kfvaDUwHlHjzg_KlTXez4jWzXPFBhCarQvHQ",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"APP_USER\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ASSIGN ROLE TO USER",
+			"request": {
+				"url": "localhost:8080/user/role",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rMUBnbWFpbC5jb20iLCJleHAiOjE1ODEzMjQzMDcsImlhdCI6MTU4MTMwNjMwN30.38Mu4BixQ_6zHY40VTVKPBKdxND-0uLM-L5weXNU9WWP9iqn93kfvaDUwHlHjzg_KlTXez4jWzXPFBhCarQvHQ",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"alok1@gmail.com\",\n\t\"rolename\":\"APP_USER\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ALL ADDRESS BY USERID",
+			"request": {
+				"url": "localhost:8080/user/11/address",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rQGdtYWlsLmNvbSIsImV4cCI6MTU4MTQxOTM3NiwiaWF0IjoxNTgxNDAxMzc2fQ.E_i-2JQsz0GrvyK9duyahMH0WeUE6DhtlsIkvBrMM2li1bos0_t5FdH3FG-sD66rZG53_6AxeqMPyrMJTIgr3Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ADDRESS BY USERID & ADDRESSID",
+			"request": {
+				"url": "localhost:8080/address/4",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rQGdtYWlsLmNvbSIsImV4cCI6MTU4MTQxOTM3NiwiaWF0IjoxNTgxNDAxMzc2fQ.E_i-2JQsz0GrvyK9duyahMH0WeUE6DhtlsIkvBrMM2li1bos0_t5FdH3FG-sD66rZG53_6AxeqMPyrMJTIgr3Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE ADDRESS FOR USER",
+			"request": {
+				"url": "localhost:8080/user/11/address",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rQGdtYWlsLmNvbSIsImV4cCI6MTU4MTQxOTM3NiwiaWF0IjoxNTgxNDAxMzc2fQ.E_i-2JQsz0GrvyK9duyahMH0WeUE6DhtlsIkvBrMM2li1bos0_t5FdH3FG-sD66rZG53_6AxeqMPyrMJTIgr3Q",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"address\":{\n\t\t\"countryCode\": \"IN\",\n\t\t\"state\": \"MP\",\n\t\t\"city\":\"Indore\",\n\t\t\"line1\": \"vijay nagar\"\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ADDRESS",
+			"request": {
+				"url": "localhost:8080/user/11/address",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbG9rQGdtYWlsLmNvbSIsImV4cCI6MTU4MTQxOTM3NiwiaWF0IjoxNTgxNDAxMzc2fQ.E_i-2JQsz0GrvyK9duyahMH0WeUE6DhtlsIkvBrMM2li1bos0_t5FdH3FG-sD66rZG53_6AxeqMPyrMJTIgr3Q",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 4,\n    \"userId\": 11,\n    \"countryCode\": \"IN\",\n    \"city\": \"Indore\",\n    \"state\": \"MP\",\n    \"line1\": \"vijay nagar\",\n    \"line2\": null,\n    \"line3\": null,\n    \"createDate\": null,\n    \"updateDate\": null\n}"
 				},
 				"description": ""
 			},

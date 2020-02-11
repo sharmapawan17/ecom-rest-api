@@ -1,6 +1,5 @@
 package com.ecommerce.cart;
 
-import com.ecommerce.entity.GroupVariant;
 import com.ecommerce.entity.Order;
 import com.ecommerce.entity.OrderItem;
 import com.ecommerce.entity.Product;
@@ -84,16 +83,10 @@ public class CartServiceImpl implements CartService {
 
             Product prod = ecommerceService.getProduct(cartItem.getProductId());
             int qty = cartItem.getQuantity() > 0 ? cartItem.getQuantity() : 1;
-            long variantId = cartItem.getVariantId();
 
             for (int i = 0; i < qty; i++) {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setProduct(prod);
-                if (variantId > 0) {
-                    GroupVariant v = new GroupVariant();
-                    v.setId(variantId);
-                    orderItem.setGroupVariant(v);
-                }
                 orderItem.setOrder(order);
                 order.getItems().add(orderItem);
             }

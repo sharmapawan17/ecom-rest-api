@@ -16,8 +16,6 @@ public class ProductGroup {
     @Temporal(TemporalType.TIMESTAMP)
     private String created;
 
-    private List<GroupVariant> groupVariants;
-
     public ProductGroup() {
 
     }
@@ -60,17 +58,6 @@ public class ProductGroup {
 
     public void setCreated(String created) {
         this.created = created;
-    }
-
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @JsonIgnore
-    public List<GroupVariant> getGroupVariants() {
-        return groupVariants;
-    }
-
-    public void setGroupVariants(List<GroupVariant> groupVariants) {
-        this.groupVariants = groupVariants;
     }
 
     public String toString() {
