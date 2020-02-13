@@ -5,14 +5,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-
-import java.util.UUID;
-
-import static com.ecommerce.util.Constant.CORRELATION_ID;
 
 @Aspect
 @Component

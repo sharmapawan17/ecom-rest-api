@@ -1,0 +1,87 @@
+package com.ecommerce.user.account;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "users")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String firstname;
+    private String lastname;
+    @Column(unique = true)
+    private String email;
+    private String password;
+
+    @Column(name = "create_date", updatable = false)
+    private Date createDate;
+
+    @Column(name = "update_date")
+    private Date updateDate;
+
+    @PrePersist
+    protected void prePersist() {
+        if (createDate == null) {
+            createDate = new Date();
+        }
+        updateDate = new Date();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+}

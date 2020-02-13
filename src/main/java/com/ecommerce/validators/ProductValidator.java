@@ -1,6 +1,6 @@
 package com.ecommerce.validators;
 
-import com.ecommerce.entity.Product;
+import com.ecommerce.product.entity.Product;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -17,14 +17,5 @@ public class ProductValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "name", "name.required");
 
         Product product = (Product) o;
-
-        if (product.getGroup() == null) {
-            errors.rejectValue("group", "group.required");
-        }
-
-        if (product.getUserId() == null) {
-            errors.rejectValue("userId", "user.required");
-        }
-
     }
 }

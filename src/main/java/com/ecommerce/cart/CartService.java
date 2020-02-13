@@ -1,6 +1,6 @@
 package com.ecommerce.cart;
 
-import com.ecommerce.entity.Order;
+import com.ecommerce.order.Order;
 
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package com.ecommerce.validators;
 
-import com.ecommerce.entity.Order;
+import com.ecommerce.order.Order;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

@@ -1,8 +1,8 @@
 package com.ecommerce.cart;
 
-import com.ecommerce.entity.Order;
-import com.ecommerce.entity.OrderItem;
-import com.ecommerce.entity.Product;
+import com.ecommerce.order.Order;
+import com.ecommerce.order.OrderItem;
+import com.ecommerce.product.entity.Product;
 import com.ecommerce.service.EcommerceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
