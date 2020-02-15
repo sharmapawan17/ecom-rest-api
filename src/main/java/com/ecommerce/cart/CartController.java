@@ -1,7 +1,5 @@
 package com.ecommerce.cart;
 
-import com.ecommerce.cart.CartItem;
-import com.ecommerce.cart.CartService;
 import com.ecommerce.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;

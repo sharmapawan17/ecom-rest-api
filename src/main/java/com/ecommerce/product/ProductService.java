@@ -40,7 +40,7 @@ public class ProductService {
             ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(product.getSubCategoryName());
             if (subCategoryEntity == null) {
                 throw new IllegalArgumentException("Invalid Sub Category name");
-            }else{
+            } else {
                 updatedProduct.setSubCategoryId(subCategoryEntity.getId());
             }
         }
@@ -51,9 +51,9 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
 
         List<ProductResponse> productResponseList = new ArrayList<>();
-        products.forEach( product ->  {
+        products.forEach(product -> {
             ProductResponse response = new ProductResponse();
-            response.setDescription( product.getDescription());
+            response.setDescription(product.getDescription());
             response.setName(product.getName());
             response.setPrice(product.getPrice());
             response.setImages(getProductImages(product.getId()));
@@ -69,7 +69,7 @@ public class ProductService {
     //todo createProduct method does the same right ? remove this then.
     public Product saveProduct(ProductRequest productRequest) {
         ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(productRequest.getSubCategoryName());
-        if (subCategoryEntity == null){
+        if (subCategoryEntity == null) {
             throw new IllegalArgumentException("Invalid Sub Category ID");
         }
         Product product = new Product();
@@ -81,18 +81,18 @@ public class ProductService {
     }
 
     public ProductImageEntity addProductImage(String id, String filename) {
-            ProductImageEntity image = new ProductImageEntity();
-            image.setProductId(Long.parseLong(id));
-            image.setPath(filename);
-            return productImageRepository.save(image);
+        ProductImageEntity image = new ProductImageEntity();
+        image.setProductId(Long.parseLong(id));
+        image.setPath(filename);
+        return productImageRepository.save(image);
     }
 
-        public List<ProductImageEntity> getProductImages(long productId) {
-            List<ProductImageEntity> images = productImageRepository.findAll();
-            images = images.stream().filter(image -> image.getProductId() == productId).collect(Collectors.toList());
-            images.forEach(image -> image.setLink("http://" + HOST + ":" + PORT + "/product/image/" + image.getId()));
-            return images;
-        }
+    public List<ProductImageEntity> getProductImages(long productId) {
+        List<ProductImageEntity> images = productImageRepository.findAll();
+        images = images.stream().filter(image -> image.getProductId() == productId).collect(Collectors.toList());
+        images.forEach(image -> image.setLink("http://" + HOST + ":" + PORT + "/product/image/" + image.getId()));
+        return images;
+    }
 
     public ProductImageEntity getImage(long imageId) {
         return productImageRepository.findById(imageId).get();

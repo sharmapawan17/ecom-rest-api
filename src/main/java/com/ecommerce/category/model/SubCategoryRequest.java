@@ -9,16 +9,16 @@ public class SubCategoryRequest {
         return subCategoryName;
     }
 
+    public void setSubCategoryName(String subCategoryName) {
+        this.subCategoryName = subCategoryName;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public void setSubCategoryName(String subCategoryName) {
-        this.subCategoryName = subCategoryName;
     }
 
     public Boolean getActive() {

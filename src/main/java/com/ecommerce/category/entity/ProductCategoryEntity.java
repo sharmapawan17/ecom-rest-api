@@ -28,7 +28,7 @@ public class ProductCategoryEntity {
             orphanRemoval = true
     )
     @JsonManagedReference
-    private List<ProductSubCategoryEntity> productSubCategories  = new ArrayList<>();
+    private List<ProductSubCategoryEntity> productSubCategories = new ArrayList<>();
 
     @PrePersist
     protected void prePersist() {
@@ -48,6 +48,7 @@ public class ProductCategoryEntity {
     public String getCategoryName() {
         return categoryName;
     }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -55,6 +56,7 @@ public class ProductCategoryEntity {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }

@@ -1,6 +1,5 @@
 package com.ecommerce.user.access;
 
-import com.ecommerce.user.access.AuthorityTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

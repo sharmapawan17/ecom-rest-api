@@ -71,12 +71,12 @@ public class ProductCategoryService {
     public ProductSubCategoryEntity editSubCategory(long subCategoryId, SubCategoryRequest subCategoryRequest) {
         ProductSubCategoryEntity entity = productSubCategoryRepository.findById(subCategoryId).get();
 
-        if (entity == null){
+        if (entity == null) {
             throw new IllegalArgumentException("Invalid Sub CategoryId");
         }
-        if (subCategoryRequest.getCategoryName() != null){
+        if (subCategoryRequest.getCategoryName() != null) {
             ProductCategoryEntity productCategoryEntity = productCategoryRepository.findByCategoryName(subCategoryRequest.getCategoryName());
-            if (productCategoryEntity == null){
+            if (productCategoryEntity == null) {
                 throw new IllegalArgumentException("Invalid Category name provided in request");
             }
             entity.setProductCategory(productCategoryEntity);
@@ -92,7 +92,7 @@ public class ProductCategoryService {
 
         ProductCategoryEntity productCategoryEntity = productCategoryRepository.findByCategoryName(subCategoryRequest.getCategoryName());
 
-        if (productCategoryEntity == null){
+        if (productCategoryEntity == null) {
             throw new IllegalArgumentException("Invalid Product Category Name");
         }
         subCategoryEntity.setProductCategory(productCategoryEntity);
@@ -108,6 +108,7 @@ public class ProductCategoryService {
         productCategoryRepository.save(entity);
         return filename;
     }
+
     public String uploadSubCategoryImageImage(long categoryId, MultipartFile file) {
         String path = SUB_CATEGORY_IMAGE_ROOT + categoryId;
         String filename = storageService.store(file, path);
