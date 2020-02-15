@@ -13,6 +13,8 @@ public class Product {
     private String description;
     @Column(name = "sub_category_id")
     private long subCategoryId;
+    @Column(name = "product_code")
+    protected String productCode;
 
     public Product() {
     }
@@ -28,6 +30,14 @@ public class Product {
     }
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getName() {

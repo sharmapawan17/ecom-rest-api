@@ -1,15 +1,18 @@
 package com.ecommerce.product;
 
+import com.ecommerce.category.entity.ProductSubCategoryEntity;
 import com.ecommerce.category.repository.ProductSubCategoryRepository;
 import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.entity.ProductImageEntity;
 import com.ecommerce.product.models.ProductRequest;
+import com.ecommerce.product.models.ProductResponse;
 import com.ecommerce.product.repository.ProductImageRepository;
 import com.ecommerce.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,33 +35,48 @@ public class ProductService {
         updatedProduct.setName(product.getName());
         updatedProduct.setPrice(product.getPrice());
         updatedProduct.setDescription(product.getDescription());
-        if (product.getSubCategoryId() != 0){
-         if (productSubCategoryRepository.findById(product.getSubCategoryId()).get() == null) {
-                 throw new IllegalArgumentException("Invalid Sub Category ID");
-         }else{
-             updatedProduct.setSubCategoryId(product.getSubCategoryId());
-         }
+        updatedProduct.setProductCode(product.getProductCode());
+        if (product.getSubCategoryName() != null) {
+            ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(product.getSubCategoryName());
+            if (subCategoryEntity == null) {
+                throw new IllegalArgumentException("Invalid Sub Category name");
+            }else{
+                updatedProduct.setSubCategoryId(subCategoryEntity.getId());
+            }
         }
         return productRepository.save(updatedProduct);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        products.forEach( product ->  {
+            ProductResponse response = new ProductResponse();
+            response.setDescription( product.getDescription());
+            response.setName(product.getName());
+            response.setPrice(product.getPrice());
+            response.setImages(getProductImages(product.getId()));
+            productResponseList.add(response);
+        });
+        return productResponseList;
     }
 
     public Product getProduct(long id) {
         return productRepository.findById(id).get();
     }
 
+    //todo createProduct method does the same right ? remove this then.
     public Product saveProduct(ProductRequest productRequest) {
-        if (productSubCategoryRepository.findById(productRequest.getSubCategoryId()).get() == null){
+        ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(productRequest.getSubCategoryName());
+        if (subCategoryEntity == null){
             throw new IllegalArgumentException("Invalid Sub Category ID");
         }
         Product product = new Product();
         product.setName(productRequest.getName());
         product.setPrice(productRequest.getPrice());
         product.setDescription(productRequest.getDescription());
-        product.setSubCategoryId(productRequest.getSubCategoryId());
+        product.setSubCategoryId(subCategoryEntity.getId());
         return productRepository.save(product);
     }
 

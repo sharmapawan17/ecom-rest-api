@@ -79,7 +79,7 @@ public class CategoryController {
     }
 
     @PostMapping("sub/{subCategoryId}/uploadImage")
-    public String handleFileUpload(@PathVariable("subCategoryId") long subCategoryId, @RequestParam("file") MultipartFile file) {
+    public String handleSubCategoryImageUpload(@PathVariable("subCategoryId") long subCategoryId, @RequestParam("file") MultipartFile file) {
         return productCategoryService.uploadSubCategoryImageImage(subCategoryId, file);
     }
 

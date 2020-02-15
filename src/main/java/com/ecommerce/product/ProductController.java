@@ -3,6 +3,7 @@ package com.ecommerce.product;
 import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.entity.ProductImageEntity;
 import com.ecommerce.product.models.ProductRequest;
+import com.ecommerce.product.models.ProductResponse;
 import com.ecommerce.service.EcommerceService;
 import com.ecommerce.storage.StorageService;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     private static final Logger log = LoggerFactory.getLogger(ProductController.class.getName());
+    private static final String PRODUCT_IMAGES_LOCATION = "product-images/";
     @Autowired
     private ProductService productService;
     @Autowired
@@ -51,7 +53,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
+    public List<ProductResponse> getAll() {
         return productService.getAllProducts();
     }
 
@@ -62,7 +64,7 @@ public class ProductController {
 
     @PostMapping("/{id}/uploadimage")
     public ProductImageEntity handleFileUpload(@PathVariable("id") String id, @RequestParam("file") MultipartFile file) {
-        String path = "/product-images/" + id;
+        String path = PRODUCT_IMAGES_LOCATION + id;
         String filename = storageService.store(file, path);
 
         return productService.addProductImage(id, filename);
@@ -78,7 +80,7 @@ public class ProductController {
     public ResponseEntity<Resource> serveFile(@PathVariable("id") long imageId) {
         ProductImageEntity image = productService.getImage(imageId);
         // Relative path to StorageProperties.rootLocation
-        String path = "product-images/" + image.getProductId() + "/";
+        String path = PRODUCT_IMAGES_LOCATION + image.getProductId() + "/";
 
         Resource file = storageService.loadAsResource(path + image.getPath());
         String mimeType = "image/png";

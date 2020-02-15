@@ -1,11 +1,23 @@
 package com.ecommerce.product.models;
 
-public class ProductRequest {
+import com.ecommerce.product.entity.ProductImageEntity;
+
+import java.util.List;
+
+public class ProductResponse {
     private String name;
     private String productCode;
     private String price;
     private String description;
-    private String subCategoryName;
+    private List<ProductImageEntity> images;
+
+    public List<ProductImageEntity> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImageEntity> images) {
+        this.images = images;
+    }
 
     public String getProductCode() {
         return productCode;
@@ -13,14 +25,6 @@ public class ProductRequest {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
-    }
-
-    public String getSubCategoryName() {
-        return subCategoryName;
-    }
-
-    public void setSubCategoryName(String subCategoryName) {
-        this.subCategoryName = subCategoryName;
     }
 
     public String getName() {
