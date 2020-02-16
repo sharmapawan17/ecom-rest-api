@@ -33,7 +33,7 @@ public class FileSystemStorageService implements StorageService {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
             final Path location = Paths.get(rootLocation.toString() + "/" + path);
-            if (Files.isDirectory(location) != true) {
+            if (!Files.isDirectory(location)) {
                 Files.createDirectories(location);
             }
 

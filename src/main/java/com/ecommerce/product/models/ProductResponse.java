@@ -5,6 +5,7 @@ import com.ecommerce.product.entity.ProductImageEntity;
 import java.util.List;
 
 public class ProductResponse {
+    private long id;
     private String name;
     private String productCode;
     private String price;
@@ -17,6 +18,14 @@ public class ProductResponse {
 
     public void setImages(List<ProductImageEntity> images) {
         this.images = images;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProductCode() {

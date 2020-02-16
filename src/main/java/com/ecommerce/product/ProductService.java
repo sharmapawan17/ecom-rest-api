@@ -53,6 +53,7 @@ public class ProductService {
         List<ProductResponse> productResponseList = new ArrayList<>();
         products.forEach(product -> {
             ProductResponse response = new ProductResponse();
+            response.setId(product.getId());
             response.setDescription(product.getDescription());
             response.setName(product.getName());
             response.setPrice(product.getPrice());
