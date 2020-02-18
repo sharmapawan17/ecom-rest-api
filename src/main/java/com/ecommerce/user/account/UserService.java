@@ -37,6 +37,6 @@ public class UserService {
         if (authorityTypes == null) {
             throw new DatabaseException("DB_003", "Invalid Role");
         }
-        return userAuthorityRepository.save(new UserAuthority(userEntity.getId(), authorityTypes.getId()));
+        return userAuthorityRepository.save(new UserAuthority(userEntity.getId(), authorityTypes.getName()));
     }
 }

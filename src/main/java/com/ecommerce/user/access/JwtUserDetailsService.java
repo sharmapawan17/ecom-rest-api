@@ -35,7 +35,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         List<UserAuthority> authorities = userAuthorityRepository.findByUserId(user.getId());
         return new User(user.getEmail(), user.getPassword(),
-                authorities.stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthorityId() + "")).collect(Collectors.toList()));
+                authorities.stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthorityName() + "")).collect(Collectors.toList()));
     }
 
     public UserEntity save(UserDTO userDTO) {

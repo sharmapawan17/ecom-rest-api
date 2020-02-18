@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('1')")
+    @PreAuthorize("hasAuthority('APP_ADMIN')")
     public Product create(@RequestBody @Valid ProductRequest product) {
         return productService.saveProduct(product);
     }

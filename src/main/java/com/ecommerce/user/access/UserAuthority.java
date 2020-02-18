@@ -12,12 +12,12 @@ public class UserAuthority implements Serializable {
     @Column(name = "user_id")
     private long userId;
     @Id
-    @Column(name = "authority_id")
-    private long authorityId;
+    @Column(name = "authority_name")
+    private String authorityName;
 
-    public UserAuthority(long userId, long authorityId) {
+    public UserAuthority(long userId, String authorityName) {
         this.userId = userId;
-        this.authorityId = authorityId;
+        this.authorityName = authorityName;
     }
 
     public UserAuthority() {
@@ -26,16 +26,15 @@ public class UserAuthority implements Serializable {
     public long getUserId() {
         return userId;
     }
-
     public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public long getAuthorityId() {
-        return authorityId;
+    public String getAuthorityName() {
+        return authorityName;
     }
 
-    public void setAuthorityId(long authorityId) {
-        this.authorityId = authorityId;
+    public void setAuthorityName(String authorityName) {
+        this.authorityName = authorityName;
     }
 }
