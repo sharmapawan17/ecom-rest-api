@@ -45,7 +45,7 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}") // this means its GET method request
     public Product get(@PathVariable("id") long id) {
         return productService.getProduct(id);
     }
@@ -61,6 +61,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/uploadimage")
+    @PreAuthorize("hasAuthority('1')")
     public ProductImageEntity handleFileUpload(@PathVariable("id") String id, @RequestParam("file") MultipartFile file) {
         String path = PRODUCT_IMAGES_LOCATION + id;
         String filename = storageService.store(file, path);
