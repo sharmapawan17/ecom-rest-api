@@ -5,11 +5,11 @@ import java.util.Objects;
 
 public class UserAuthorityId implements Serializable {
     private long userId;
-    private long authorityId;
+    private String authorityName;
 
-    public UserAuthorityId(long userId, long authorityId) {
+    public UserAuthorityId(long userId, String authorityName) {
         this.userId = userId;
-        this.authorityId = authorityId;
+        this.authorityName = authorityName;
     }
 
     public UserAuthorityId() {
@@ -21,11 +21,11 @@ public class UserAuthorityId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         UserAuthorityId that = (UserAuthorityId) o;
         return userId == that.userId &&
-                authorityId == that.authorityId;
+                authorityName == that.authorityName;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, authorityId);
+        return Objects.hash(userId, authorityName);
     }
 }

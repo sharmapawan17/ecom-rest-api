@@ -39,8 +39,8 @@ public class ProductController {
         binder.addValidators(productValidator);
     }
 
-    @PostMapping  // this means its a POST request method
-    @PreAuthorize("hasAuthority('1')")
+    @PostMapping
+    @PreAuthorize("hasAuthority('APP_ADMIN')")
     public Product create(@RequestBody @Valid ProductRequest product) {
         return productService.saveProduct(product);
     }
