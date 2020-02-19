@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/uploadimage")
-    @PreAuthorize("hasAuthority('1')")
+    @PreAuthorize("hasAuthority('APP_ADMIN')")
     public ProductImageEntity handleFileUpload(@PathVariable("id") String id, @RequestParam("file") MultipartFile file) {
         String path = PRODUCT_IMAGES_LOCATION + id;
         String filename = storageService.store(file, path);
