@@ -35,9 +35,10 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
 
+        LoggedInUser loggedInUser = userDetailsService.getUserDetails(authenticationRequest.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        loggedInUser.setToken(token);
+        return ResponseEntity.ok(loggedInUser);
     }
 
     private void authenticate(String username, String password) throws Exception {

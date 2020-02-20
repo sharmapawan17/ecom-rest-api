@@ -7,7 +7,24 @@ public class UserDTO {
     private String lastname;
     private String email;
     private String password;
-    private AddressDTO address;
+    private String fcmToken;
+    private String deviceType;
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -39,13 +56,5 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public AddressDTO getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressDTO address) {
-        this.address = address;
     }
 }

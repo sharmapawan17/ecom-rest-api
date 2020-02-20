@@ -25,9 +25,7 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
         UserEntity userEntity = userDetailsService.save(userDTO);
-        if (userDTO.getAddress() != null) {
-            addressService.saveAddress(userDTO.getAddress(), userEntity.getId());
-        }
+
         return ResponseEntity.ok(userDTO);
     }
 
