@@ -15,6 +15,13 @@ public class Product {
     private String description;
     @Column(name = "sub_category_id")
     private long subCategoryId;
+    private String unitOfMeasure;
+    private Double offer;
+    @Column(name = "offer_price")
+    private Double offerPrice;
+    private String type;
+    @Column(name = "additional_info")
+    private String additionalInfo;
 
     public Product() {
     }
@@ -85,4 +92,43 @@ public class Product {
         return getName();
     }
 
+    public String getUnitOfMeasure() {
+        return unitOfMeasure;
+    }
+
+    public void setUnitOfMeasure(String unitOfMeasure) {
+        this.unitOfMeasure = unitOfMeasure;
+    }
+
+    public Double getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Double offer) {
+        this.offer = offer;
+    }
+
+    public Double getOfferPrice() {
+        return offerPrice;
+    }
+
+    public void setOfferPrice(Double offerPrice) {
+        this.offerPrice = offerPrice;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
 }

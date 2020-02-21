@@ -5,6 +5,7 @@ import com.ecommerce.user.account.UserDTO;
 import com.ecommerce.user.account.UserEntity;
 import com.ecommerce.user.account.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,4 +66,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         return loggedInUser;
         }
+
+    public void deActivateUser(String email) {
+        UserEntity entity = userRepository.findByEmail(email);
+        userRepository.delete(entity);
+    }
 }
