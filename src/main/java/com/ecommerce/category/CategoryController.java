@@ -13,7 +13,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -45,7 +44,7 @@ public class CategoryController {
 
     @PostMapping
     public ProductCategoryEntity createCategory(
-            CategoryRequest category,@RequestParam("file") MultipartFile file) {
+            CategoryRequest category, @RequestParam("file") MultipartFile file) {
         return productCategoryService.createProductCategory(category, file);
     }
 
@@ -89,7 +88,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/subcategory/{subcategoryId}")
-    public void deleteSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId){
+    public void deleteSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId) {
         productCategoryService.deleteSubCategory(subCategoryId);
     }
 }

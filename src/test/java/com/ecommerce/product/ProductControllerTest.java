@@ -1,55 +1,41 @@
 package com.ecommerce.product;
 
-import com.ecommerce.config.WebSecurityConfig;
 import com.ecommerce.jwt.JwtRequest;
 import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.models.ProductRequest;
 import com.ecommerce.user.access.LoggedInUser;
 import com.ecommerce.user.access.UserAuthorityRequest;
 import com.ecommerce.user.account.UserDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ProductControllerTest {
 
+    private static final String HOST = "http://localhost:";
     @LocalServerPort
     private int port;
-
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private static final String HOST = "http://localhost:";
+    private String token;
 
     @BeforeEach
-    void before(){
+    void before() {
         token = null;
         registerUser();
         authenticateUser();
@@ -57,17 +43,15 @@ class ProductControllerTest {
     }
 
     @AfterEach
-    void after(){
+    void after() {
         deactivateUser();
     }
-
-    private String token;
 
     @Test
     void testProductCreationHappyPath() throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Authorization", "Bearer "+token);
+            headers.add("Authorization", "Bearer " + token);
 
             ProductRequest request = new ProductRequest();
             request.setSubCategoryId(1L);
@@ -83,14 +67,14 @@ class ProductControllerTest {
 
             HttpEntity<ProductRequest> entity = new HttpEntity<>(request, headers);
 
-            ResponseEntity<Product> productResponseEntity = restTemplate.postForEntity(HOST+port + "/product", entity, Product.class);
+            ResponseEntity<Product> productResponseEntity = restTemplate.postForEntity(HOST + port + "/product", entity, Product.class);
             assertNotNull(productResponseEntity.getBody());
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    void registerUser(){
+    void registerUser() {
         UserDTO userDTO = new UserDTO();
         userDTO.setDeviceType("Android");
         userDTO.setFcmToken("gnrskhbrdakjfsfbdshjfnSFS87586");
@@ -98,21 +82,21 @@ class ProductControllerTest {
         userDTO.setFirstname("test");
         userDTO.setLastname("test");
         userDTO.setPassword("12345");
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST+port + "/user/register", userDTO, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST + port + "/user/register", userDTO, String.class);
         assertNotNull(responseEntity);
     }
 
-    void deactivateUser(){
+    void deactivateUser() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer "+token);
+        headers.add("Authorization", "Bearer " + token);
         HttpEntity entity = new HttpEntity(null, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST+port + "/user/deactivate?email=test@gmail.com", entity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST + port + "/user/deactivate?email=test@gmail.com", entity, String.class);
         assertNotNull(responseEntity);
     }
 
     private void authorizeAdmin() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer "+token);
+        headers.add("Authorization", "Bearer " + token);
 
         UserAuthorityRequest request = new UserAuthorityRequest();
         request.setRolename("APP_ADMIN");
@@ -120,15 +104,15 @@ class ProductControllerTest {
 
         HttpEntity<UserAuthorityRequest> entity = new HttpEntity<>(request, headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST+port + "/user/role", entity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(HOST + port + "/user/role", entity, String.class);
         assertNotNull(responseEntity);
     }
 
-    void authenticateUser(){
+    void authenticateUser() {
         JwtRequest request = new JwtRequest();
         request.setEmail("test@gmail.com");
         request.setPassword("12345");
-        ResponseEntity<LoggedInUser> responseEntity = restTemplate.postForEntity(HOST+port + "/authenticate", request, LoggedInUser.class);
+        ResponseEntity<LoggedInUser> responseEntity = restTemplate.postForEntity(HOST + port + "/authenticate", request, LoggedInUser.class);
         token = responseEntity.getBody().getToken();
         assertNotNull(token);
     }

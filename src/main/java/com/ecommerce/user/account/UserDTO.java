@@ -1,7 +1,5 @@
 package com.ecommerce.user.account;
 
-import com.ecommerce.user.address.AddressDTO;
-
 public class UserDTO {
     private String firstname;
     private String lastname;

@@ -83,8 +83,8 @@ public class ProductCategoryService {
         if (subCategoryRequest.getSubCategoryName() != null) {
             entity.setSubCategoryName(subCategoryRequest.getSubCategoryName());
         }
-        ProductSubCategoryEntity out =  productSubCategoryRepository.save(entity);
-        if (file != null){
+        ProductSubCategoryEntity out = productSubCategoryRepository.save(entity);
+        if (file != null) {
             uploadSubCategoryImageImage(out.getId(), file);
         }
         return out;
@@ -175,7 +175,7 @@ public class ProductCategoryService {
             productCategory.setCategoryName(categoryRequest.getCategoryName());
         }
         productCategoryRepository.save(productCategory);
-        if (file != null){
+        if (file != null) {
             uploadCategoryImageImage(productCategory.getId(), file);
         }
         return productCategory;

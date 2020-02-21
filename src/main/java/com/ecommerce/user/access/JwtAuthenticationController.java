@@ -1,7 +1,6 @@
 package com.ecommerce.user.access;
 
 import com.ecommerce.jwt.JwtRequest;
-import com.ecommerce.jwt.JwtResponse;
 import com.ecommerce.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,5 @@
 package com.ecommerce.category.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class CategoryRequest {
     private String categoryName;
     private Boolean active;

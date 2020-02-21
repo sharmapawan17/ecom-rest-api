@@ -19,6 +19,10 @@ public class UserEntity {
     private String fcmToken;
     @Column(name = "device_type")
     private String deviceType;
+    @Column(name = "create_date", updatable = false)
+    private Date createDate;
+    @Column(name = "update_date")
+    private Date updateDate;
 
     public String getFcmToken() {
         return fcmToken;
@@ -35,12 +39,6 @@ public class UserEntity {
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
-
-    @Column(name = "create_date", updatable = false)
-    private Date createDate;
-
-    @Column(name = "update_date")
-    private Date updateDate;
 
     @PrePersist
     protected void prePersist() {

@@ -67,7 +67,7 @@ public class ProductController {
     public List<ProductImageEntity> handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files) {
         String path = PRODUCT_IMAGES_LOCATION + id;
         List<ProductImageEntity> outList = new ArrayList<>();
-        for (int i=0; i < files.length; i++){
+        for (int i = 0; i < files.length; i++) {
             String filename = storageService.store(files[i], path);
             ProductImageEntity imageEntity = productService.addProductImage(id, filename);
             outList.add(imageEntity);

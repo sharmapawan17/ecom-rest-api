@@ -26,6 +26,7 @@ public class UserAuthority implements Serializable {
     public long getUserId() {
         return userId;
     }
+
     public void setUserId(long userId) {
         this.userId = userId;
     }

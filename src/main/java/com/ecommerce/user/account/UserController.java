@@ -23,7 +23,7 @@ public class UserController {
     private AddressService addressService;
 
     @PostMapping(value = "/deactivate")
-    public ResponseEntity<?> deactivate(String email){
+    public ResponseEntity<?> deactivate(String email) {
         userDetailsService.deActivateUser(email);
         return ResponseEntity.ok("Complete the request");
     }
