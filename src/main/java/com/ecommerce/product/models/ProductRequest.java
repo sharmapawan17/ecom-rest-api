@@ -1,5 +1,8 @@
 package com.ecommerce.product.models;
 
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class ProductRequest {
     private String name;
     private String productCode;

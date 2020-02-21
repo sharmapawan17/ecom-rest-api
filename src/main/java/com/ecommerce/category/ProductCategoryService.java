@@ -85,6 +85,7 @@ public class ProductCategoryService {
         }
         ProductSubCategoryEntity out = productSubCategoryRepository.save(entity);
         if (file != null) {
+            // todo delete the existing image first.
             uploadSubCategoryImageImage(out.getId(), file);
         }
         return out;
@@ -176,6 +177,7 @@ public class ProductCategoryService {
         }
         productCategoryRepository.save(productCategory);
         if (file != null) {
+            // todo remove old file first ?
             uploadCategoryImageImage(productCategory.getId(), file);
         }
         return productCategory;

@@ -16,11 +16,15 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -58,12 +62,9 @@ class ProductControllerTest {
             request.setName("testProduct");
 
 
-            BufferedImage image = ImageIO.read(new File("/images/samsung10.jpg"));
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ImageIO.write(image, "jpg", out);
-
-//            MultipartFile[] file = {out.toByteArray()};
-//            request.setImageFiles(file);
+            InputStream in = new FileInputStream(new File("C:\\Users\\Kishore\\IdeaProjects\\ecom-rest-api\\src\\test\\resources\\images\\samsungs10.jpg"));
+            MockMultipartFile file = new MockMultipartFile("files", in);
+            request.setImageFiles(new MultipartFile[] {file});
 
             HttpEntity<ProductRequest> entity = new HttpEntity<>(request, headers);
 

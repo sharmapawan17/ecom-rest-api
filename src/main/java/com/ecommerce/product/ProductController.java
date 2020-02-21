@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Validator;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -40,10 +42,12 @@ public class ProductController {
         binder.addValidators(productValidator);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('APP_ADMIN')")
-    public Product createProduct(@RequestBody ProductRequest product) {
+    public Product createProduct(@RequestPart ProductRequest product,
+                                 @RequestPart(required = false) MultipartFile [] files) {
         Product out = productService.saveProduct(product);
+        handleFileUpload(out.getId(), files);
         return out;
     }
 
@@ -62,7 +66,7 @@ public class ProductController {
         return productService.updateProduct(id, product);
     }
 
-    @PostMapping("/{id}/uploadimage")
+    @PostMapping(value = "/{id}/uploadimage")
     @PreAuthorize("hasAuthority('APP_ADMIN')")
     public List<ProductImageEntity> handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files) {
         String path = PRODUCT_IMAGES_LOCATION + id;
