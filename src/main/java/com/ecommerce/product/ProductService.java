@@ -36,8 +36,8 @@ public class ProductService {
         updatedProduct.setPrice(product.getPrice());
         updatedProduct.setDescription(product.getDescription());
         updatedProduct.setProductCode(product.getProductCode());
-        if (product.getSubCategoryName() != null) {
-            ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(product.getSubCategoryName());
+        if (product.getSubCategoryId() != null) {
+            ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findById(product.getSubCategoryId()).get();
             if (subCategoryEntity == null) {
                 throw new IllegalArgumentException("Invalid Sub Category name");
             } else {
@@ -69,7 +69,7 @@ public class ProductService {
 
     //todo createProduct method does the same right ? remove this then.
     public Product saveProduct(ProductRequest productRequest) {
-        ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findBySubCategoryName(productRequest.getSubCategoryName());
+        ProductSubCategoryEntity subCategoryEntity = productSubCategoryRepository.findById(productRequest.getSubCategoryId()).get();
         if (subCategoryEntity == null) {
             throw new IllegalArgumentException("Invalid Sub Category ID");
         }
@@ -78,12 +78,19 @@ public class ProductService {
         product.setPrice(productRequest.getPrice());
         product.setDescription(productRequest.getDescription());
         product.setSubCategoryId(subCategoryEntity.getId());
+        product.setUnitOfMeasure(productRequest.getUnitOfMeasure());
+        product.setPrice(productRequest.getPrice());
+        product.setOffer(Double.valueOf(productRequest.getOffer())); // todo need to do proper validation on input amount
+        product.setOfferPrice(Double.valueOf(productRequest.getOfferPrice())); // todo need to do proper validation on input amount
+        product.setType(productRequest.getType());
+        product.setAdditionalInfo(productRequest.getAdditionalInfo());
+
         return productRepository.save(product);
     }
 
-    public ProductImageEntity addProductImage(String id, String filename) {
+    public ProductImageEntity addProductImage(Long id, String filename) {
         ProductImageEntity image = new ProductImageEntity();
-        image.setProductId(Long.parseLong(id));
+        image.setProductId(id);
         image.setPath(filename);
         return productImageRepository.save(image);
     }

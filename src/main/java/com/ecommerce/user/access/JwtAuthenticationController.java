@@ -1,7 +1,6 @@
 package com.ecommerce.user.access;
 
 import com.ecommerce.jwt.JwtRequest;
-import com.ecommerce.jwt.JwtResponse;
 import com.ecommerce.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +34,10 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
 
+        LoggedInUser loggedInUser = userDetailsService.getUserDetails(authenticationRequest.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        loggedInUser.setToken(token);
+        return ResponseEntity.ok(loggedInUser);
     }
 
     private void authenticate(String username, String password) throws Exception {

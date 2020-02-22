@@ -1,438 +1,438 @@
 {
-	"info": {
-		"_postman_id": "c94a4e6d-b5f0-4a8a-9ee7-1ec176d4bbd9",
-		"name": "E-Commerce APIs",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "AUTHENTICATE",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "faf627ae-4b06-47cb-a2ac-471f467376f0",
-						"exec": [
-							"try{",
-							"    var responseJson = JSON.parse(responseBody);",
-							"    console.log(\"--> \", responseJson.token);",
-							"    pm.globals.set(\"token\", responseJson.token);",
-							"}catch(e){",
-							"    console.log(e);",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\":\"alok@gmail.com\",\n\t\"password\":\"23456\"\n}"
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/authenticate",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"authenticate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "REGISTER USER",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"firstname\": \"Alok\",\n\t\"lastname\": \"Tiwari\",\n\t\"email\":\"alok3@gmail.com\",\n\t\"password\":\"23456\",\n\t\"address\":{\n\t\t\"countryCode\": \"IN\",\n\t\t\"state\": \"MP\",\n\t\t\"city\":\"Indore\",\n\t\t\"line1\": \"vijay nagar\"\n\t}\n}"
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/user/register",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CREATE PRODUCT",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Lux\",\n\t\"price\": \"12.90\",\n\t\"description\": \"Soap product\",\n\t\"productGroup\": {\n\t\t\"groupName\": \"ABC\",\n\t\t\"price\": \"1.2\"\n\t}\n}"
-				},
-				"url": {
-					"raw": "{{host}}:{{port}}/product",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"product"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET PRODUCT",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/product/3",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"product",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "UPLOAD PRODUCT IMAGE",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "file",
-							"type": "file",
-							"src": "/C:/Users/Kishore/Downloads/samsungs10.jpg"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://{{host}}:{{port}}/product/3/uploadimage",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"product",
-						"3",
-						"uploadimage"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "IMAGES FOR PRODUCT",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host}}:{{port}}/product/3/images",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"product",
-						"3",
-						"images"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET IMAGE",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/product/image/3",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"product",
-						"image",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CREATE NEW AUTHORITY",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"name\":\"APP_ADMIN\"\n}"
-				},
-				"url": {
-					"raw": "{{host}}:{{port}}/user/authority",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"authority"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ASSIGN ROLE TO USER",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"username\":\"alok3@gmail.com\",\n\t\"rolename\":\"APP_USER\"\n}"
-				},
-				"url": {
-					"raw": "{{host}}:{{port}}/user/role",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"role"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ALL ADDRESS BY USERID",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{host}}:{{port}}/user/11/address",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"11",
-						"address"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ADDRESS BY USERID & ADDRESSID",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"url": {
-					"raw": "{{host}}:{{port}}/address/4",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"address",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CREATE ADDRESS FOR USER",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"address\":{\n\t\t\"countryCode\": \"IN\",\n\t\t\"state\": \"MP\",\n\t\t\"city\":\"Indore\",\n\t\t\"line1\": \"vijay nagar\"\n\t}\n}"
-				},
-				"url": {
-					"raw": "{{host}}:{{port}}/user/11/address",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"11",
-						"address"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE ADDRESS",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": 4,\n    \"userId\": 11,\n    \"countryCode\": \"IN\",\n    \"city\": \"Indore\",\n    \"state\": \"MP\",\n    \"line1\": \"vijay nagar\",\n    \"line2\": null,\n    \"line3\": null,\n    \"createDate\": null,\n    \"updateDate\": null\n}"
-				},
-				"url": {
-					"raw": "{{host}}:{{port}}/user/11/address",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"user",
-						"11",
-						"address"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"protocolProfileBehavior": {}
+  "info": {
+    "_postman_id": "c94a4e6d-b5f0-4a8a-9ee7-1ec176d4bbd9",
+    "name": "E-Commerce APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AUTHENTICATE",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "faf627ae-4b06-47cb-a2ac-471f467376f0",
+            "exec": [
+              "try{",
+              "    var responseJson = JSON.parse(responseBody);",
+              "    console.log(\"--> \", responseJson.token);",
+              "    pm.globals.set(\"token\", responseJson.token);",
+              "}catch(e){",
+              "    console.log(e);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"email\":\"alok@gmail.com\",\n\t\"password\":\"23456\"\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/authenticate",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "authenticate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "REGISTER USER",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"firstname\": \"Alok\",\n\t\"lastname\": \"Tiwari\",\n\t\"email\":\"alok3@gmail.com\",\n\t\"password\":\"23456\",\n\t\"address\":{\n\t\t\"countryCode\": \"IN\",\n\t\t\"state\": \"MP\",\n\t\t\"city\":\"Indore\",\n\t\t\"line1\": \"vijay nagar\"\n\t}\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/user/register",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE PRODUCT",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Lux\",\n\t\"price\": \"12.90\",\n\t\"description\": \"Soap product\",\n\t\"productGroup\": {\n\t\t\"groupName\": \"ABC\",\n\t\t\"price\": \"1.2\"\n\t}\n}"
+        },
+        "url": {
+          "raw": "{{host}}:{{port}}/product",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "product"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET PRODUCT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/product/3",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "product",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UPLOAD PRODUCT IMAGE",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/C:/Users/Kishore/Downloads/samsungs10.jpg"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://{{host}}:{{port}}/product/3/uploadimage",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "product",
+            "3",
+            "uploadimage"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "IMAGES FOR PRODUCT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}:{{port}}/product/3/images",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "product",
+            "3",
+            "images"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET IMAGE",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://{{host}}:{{port}}/product/image/3",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "product",
+            "image",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE NEW AUTHORITY",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\":\"APP_ADMIN\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}:{{port}}/user/authority",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "authority"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ASSIGN ROLE TO USER",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"username\":\"alok3@gmail.com\",\n\t\"rolename\":\"APP_USER\"\n}"
+        },
+        "url": {
+          "raw": "{{host}}:{{port}}/user/role",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "role"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ALL ADDRESS BY USERID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}:{{port}}/user/11/address",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "11",
+            "address"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ADDRESS BY USERID & ADDRESSID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}:{{port}}/address/4",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "address",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE ADDRESS FOR USER",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"address\":{\n\t\t\"countryCode\": \"IN\",\n\t\t\"state\": \"MP\",\n\t\t\"city\":\"Indore\",\n\t\t\"line1\": \"vijay nagar\"\n\t}\n}"
+        },
+        "url": {
+          "raw": "{{host}}:{{port}}/user/11/address",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "11",
+            "address"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE ADDRESS",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": 4,\n    \"userId\": 11,\n    \"countryCode\": \"IN\",\n    \"city\": \"Indore\",\n    \"state\": \"MP\",\n    \"line1\": \"vijay nagar\",\n    \"line2\": null,\n    \"line3\": null,\n    \"createDate\": null,\n    \"updateDate\": null\n}"
+        },
+        "url": {
+          "raw": "{{host}}:{{port}}/user/11/address",
+          "host": [
+            "{{host}}"
+          ],
+          "port": "{{port}}",
+          "path": [
+            "user",
+            "11",
+            "address"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
 }

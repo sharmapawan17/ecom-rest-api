@@ -22,12 +22,16 @@ public class UserController {
     @Autowired
     private AddressService addressService;
 
+    @PostMapping(value = "/deactivate")
+    public ResponseEntity<?> deactivate(String email) {
+        userDetailsService.deActivateUser(email);
+        return ResponseEntity.ok("Complete the request");
+    }
+
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
         UserEntity userEntity = userDetailsService.save(userDTO);
-        if (userDTO.getAddress() != null) {
-            addressService.saveAddress(userDTO.getAddress(), userEntity.getId());
-        }
+
         return ResponseEntity.ok(userDTO);
     }
 

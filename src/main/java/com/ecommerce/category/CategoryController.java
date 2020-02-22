@@ -13,7 +13,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +32,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<ProductCategoryEntity> productAllCategories() {
+    public List<ProductCategoryEntity> allCategories() {
         List<ProductCategoryEntity> list = productCategoryService.getProductCategories();
         return list;
     }
@@ -45,13 +44,16 @@ public class CategoryController {
 
     @PostMapping
     public ProductCategoryEntity createCategory(
-            @RequestBody @Valid CategoryRequest category) {
-        return productCategoryService.createProductCategory(category);
+            CategoryRequest category, @RequestParam("file") MultipartFile file) {
+        return productCategoryService.createProductCategory(category, file);
     }
 
-    @PostMapping("{categoryId}/uploadImage")
-    public String handleCategoryImageUpload(@PathVariable("categoryId") long categoryId, @RequestParam("file") MultipartFile file) {
-        return productCategoryService.uploadCategoryImageImage(categoryId, file);
+    @PostMapping("/{categoryId}")
+    public ProductCategoryEntity editCategory(@PathVariable(value = "categoryId") long categoryId,
+                                              CategoryRequest categoryRequest,
+                                              @RequestParam(value = "file", required = false) MultipartFile file) {
+
+        return productCategoryService.editProductCategory(categoryId, categoryRequest, file);
     }
 
     @GetMapping("/image/{categoryId}")
@@ -60,42 +62,33 @@ public class CategoryController {
         return productCategoryService.serveCategoryImage(categoryId);
     }
 
-    @GetMapping("/sub/image/{subCategoryId}")
+    @GetMapping("/subcategory/image/{subCategoryId}")
     @ResponseBody
     public ResponseEntity<Resource> serveSubCategoryImage(@PathVariable("subCategoryId") long subCategoryId) {
         return productCategoryService.serveSubCategoryImage(subCategoryId);
     }
 
-    @PostMapping("/{categoryId}")
-    public ProductCategoryEntity editCategory(@PathVariable(value = "categoryId") long categoryId,
-                                              @RequestBody @Valid CategoryRequest categoryRequest) {
-
-        ProductCategoryEntity productCategory = productCategoryService.getProductCategory(categoryId);
-
-        if (productCategory == null) {
-            throw new IllegalArgumentException("Invlid Product Category ID");
-        }
-        return productCategoryService.createProductCategory(categoryRequest);
-    }
-
-    @PostMapping("sub/{subCategoryId}/uploadImage")
-    public String handleSubCategoryImageUpload(@PathVariable("subCategoryId") long subCategoryId, @RequestParam("file") MultipartFile file) {
-        return productCategoryService.uploadSubCategoryImageImage(subCategoryId, file);
-    }
-
     @PostMapping("/subcategory")
     public ProductSubCategoryEntity createSubCategory(
-            @RequestBody @Valid SubCategoryRequest subCategoryRequest) {
-        return productCategoryService.createProductSubCategory(subCategoryRequest);
+            SubCategoryRequest subCategoryRequest,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+        return productCategoryService.createProductSubCategory(subCategoryRequest, file);
     }
 
-    @PostMapping("/sub/{subCategoryId}")
-    public ProductSubCategoryEntity editSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId, @RequestBody @Valid SubCategoryRequest subCategoryRequest) {
-        return productCategoryService.editSubCategory(subCategoryId, subCategoryRequest);
+    @PostMapping("/subcategory/{subCategoryId}")
+    public ProductSubCategoryEntity editSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId,
+                                                    SubCategoryRequest subCategoryRequest,
+                                                    @RequestParam(value = "file", required = false) MultipartFile file) {
+        return productCategoryService.editSubCategory(subCategoryId, subCategoryRequest, file);
     }
 
     @DeleteMapping("/{categoryId}")
-    public void delete(@PathVariable(value = "categoryId") long categoryId) {
+    public void deleteCategory(@PathVariable(value = "categoryId") long categoryId) {
         productCategoryService.deleteCategory(categoryId);
+    }
+
+    @DeleteMapping("/subcategory/{subcategoryId}")
+    public void deleteSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId) {
+        productCategoryService.deleteSubCategory(subCategoryId);
     }
 }

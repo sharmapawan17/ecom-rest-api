@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Validator;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,13 +42,16 @@ public class ProductController {
         binder.addValidators(productValidator);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('APP_ADMIN')")
-    public Product create(@RequestBody @Valid ProductRequest product) {
-        return productService.saveProduct(product);
+    public Product createProduct(@RequestPart ProductRequest product,
+                                 @RequestPart(required = false) MultipartFile [] files) {
+        Product out = productService.saveProduct(product);
+        handleFileUpload(out.getId(), files);
+        return out;
     }
 
-    @GetMapping(value = "/{id}") // this means its GET method request
+    @GetMapping(value = "/{id}")
     public Product get(@PathVariable("id") long id) {
         return productService.getProduct(id);
     }
@@ -60,13 +66,17 @@ public class ProductController {
         return productService.updateProduct(id, product);
     }
 
-    @PostMapping("/{id}/uploadimage")
-    @PreAuthorize("hasAuthority('1')")
-    public ProductImageEntity handleFileUpload(@PathVariable("id") String id, @RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/{id}/uploadimage")
+    @PreAuthorize("hasAuthority('APP_ADMIN')")
+    public List<ProductImageEntity> handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files) {
         String path = PRODUCT_IMAGES_LOCATION + id;
-        String filename = storageService.store(file, path);
-
-        return productService.addProductImage(id, filename);
+        List<ProductImageEntity> outList = new ArrayList<>();
+        for (int i = 0; i < files.length; i++) {
+            String filename = storageService.store(files[i], path);
+            ProductImageEntity imageEntity = productService.addProductImage(id, filename);
+            outList.add(imageEntity);
+        }
+        return outList;
     }
 
     @GetMapping("/{id}/images")

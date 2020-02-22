@@ -44,6 +44,30 @@ public class JwtUserDetailsService implements UserDetailsService {
         user.setLastname(userDTO.getLastname());
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setFcmToken(userDTO.getFcmToken());
+        user.setDeviceType(userDTO.getDeviceType());
         return userRepository.save(user);
+    }
+
+    public LoggedInUser getUserDetails(String email) {
+        UserEntity user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + email);
+        }
+        List<UserAuthority> authorities = userAuthorityRepository.findByUserId(user.getId());
+
+        LoggedInUser loggedInUser = new LoggedInUser();
+        loggedInUser.setEmail(user.getEmail());
+        loggedInUser.setDeviceType(user.getDeviceType());
+        loggedInUser.setFcmToken(user.getFcmToken());
+        loggedInUser.setUserId(user.getId());
+        loggedInUser.setRoles(authorities.stream().map(auth -> auth.getAuthorityName()).collect(Collectors.toList()));
+
+        return loggedInUser;
+    }
+
+    public void deActivateUser(String email) {
+        UserEntity entity = userRepository.findByEmail(email);
+        userRepository.delete(entity);
     }
 }

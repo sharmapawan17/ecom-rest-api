@@ -46,11 +46,14 @@ public class ProductCategoryService {
         return productCategoryRepository.save(productCategory);
     }
 
-    public ProductCategoryEntity createProductCategory(CategoryRequest category) {
+    public ProductCategoryEntity createProductCategory(CategoryRequest category, MultipartFile file) {
         ProductCategoryEntity entity = new ProductCategoryEntity();
         entity.setCategoryName(category.getCategoryName());
         entity.setActive(true);
-        return productCategoryRepository.save(entity);
+        ProductCategoryEntity out = productCategoryRepository.save(entity);
+
+        uploadCategoryImageImage(out.getId(), file);
+        return null; // todo better handling
     }
 
     private List<ProductSubCategoryEntity> prepareSubCategoryList(ProductCategoryEntity entity, List<SubCategoryRequest> subCategories) {
@@ -64,40 +67,45 @@ public class ProductCategoryService {
         return list;
     }
 
-    public void deleteCategory(long categoryId) {
-        productCategoryRepository.deleteById(categoryId);
-    }
-
-    public ProductSubCategoryEntity editSubCategory(long subCategoryId, SubCategoryRequest subCategoryRequest) {
+    public ProductSubCategoryEntity editSubCategory(long subCategoryId, SubCategoryRequest subCategoryRequest, MultipartFile file) {
         ProductSubCategoryEntity entity = productSubCategoryRepository.findById(subCategoryId).get();
 
         if (entity == null) {
             throw new IllegalArgumentException("Invalid Sub CategoryId");
         }
-        if (subCategoryRequest.getCategoryName() != null) {
-            ProductCategoryEntity productCategoryEntity = productCategoryRepository.findByCategoryName(subCategoryRequest.getCategoryName());
+        if (subCategoryRequest.getCategoryId() != null) {
+            ProductCategoryEntity productCategoryEntity = productCategoryRepository.findById(subCategoryRequest.getCategoryId()).get();
             if (productCategoryEntity == null) {
                 throw new IllegalArgumentException("Invalid Category name provided in request");
             }
             entity.setProductCategory(productCategoryEntity);
         }
-        entity.setSubCategoryName(subCategoryRequest.getSubCategoryName());
-        return productSubCategoryRepository.save(entity);
+        if (subCategoryRequest.getSubCategoryName() != null) {
+            entity.setSubCategoryName(subCategoryRequest.getSubCategoryName());
+        }
+        ProductSubCategoryEntity out = productSubCategoryRepository.save(entity);
+        if (file != null) {
+            // todo delete the existing image first.
+            uploadSubCategoryImageImage(out.getId(), file);
+        }
+        return out;
     }
 
-    public ProductSubCategoryEntity createProductSubCategory(SubCategoryRequest subCategoryRequest) {
+    public ProductSubCategoryEntity createProductSubCategory(SubCategoryRequest subCategoryRequest, MultipartFile file) {
         ProductSubCategoryEntity subCategoryEntity = new ProductSubCategoryEntity();
         subCategoryEntity.setSubCategoryName(subCategoryRequest.getSubCategoryName());
         subCategoryEntity.setActive(subCategoryRequest.getActive());
 
-        ProductCategoryEntity productCategoryEntity = productCategoryRepository.findByCategoryName(subCategoryRequest.getCategoryName());
+        ProductCategoryEntity productCategoryEntity = productCategoryRepository.findById(subCategoryRequest.getCategoryId()).get();
 
         if (productCategoryEntity == null) {
             throw new IllegalArgumentException("Invalid Product Category Name");
         }
         subCategoryEntity.setProductCategory(productCategoryEntity);
 
-        return productSubCategoryRepository.save(subCategoryEntity);
+        ProductSubCategoryEntity out = productSubCategoryRepository.save(subCategoryEntity);
+        uploadSubCategoryImageImage(out.getId(), file);
+        return out;
     }
 
     public String uploadCategoryImageImage(long categoryId, MultipartFile file) {
@@ -155,5 +163,33 @@ public class ProductCategoryService {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .header(HttpHeaders.CONTENT_TYPE, mimeType)
                 .body(file);
+    }
+
+    public ProductCategoryEntity editProductCategory(long categoryId, CategoryRequest categoryRequest, MultipartFile file) {
+        ProductCategoryEntity productCategory = getProductCategory(categoryId);
+
+        if (productCategory == null) {
+            throw new IllegalArgumentException("Invalid Product Category ID");
+        }
+
+        if (categoryRequest.getCategoryName() != null) {
+            productCategory.setCategoryName(categoryRequest.getCategoryName());
+        }
+        productCategoryRepository.save(productCategory);
+        if (file != null) {
+            // todo remove old file first ?
+            uploadCategoryImageImage(productCategory.getId(), file);
+        }
+        return productCategory;
+    }
+
+    public void deleteCategory(long categoryId) {
+        // todo delete the image from file system
+        productCategoryRepository.deleteById(categoryId);
+    }
+
+    public void deleteSubCategory(long subCategoryId) {
+        // todo delete the image from file system
+        productSubCategoryRepository.deleteById(subCategoryId);
     }
 }

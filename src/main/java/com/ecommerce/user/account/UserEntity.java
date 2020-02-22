@@ -15,11 +15,30 @@ public class UserEntity {
     private String email;
     private String password;
 
+    @Column(name = "fcm_token")
+    private String fcmToken;
+    @Column(name = "device_type")
+    private String deviceType;
     @Column(name = "create_date", updatable = false)
     private Date createDate;
-
     @Column(name = "update_date")
     private Date updateDate;
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
 
     @PrePersist
     protected void prePersist() {
