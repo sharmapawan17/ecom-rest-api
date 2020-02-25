@@ -5,7 +5,6 @@ import com.ecommerce.user.account.UserDTO;
 import com.ecommerce.user.account.UserEntity;
 import com.ecommerce.user.account.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,11 +33,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + email);
         }
-        UserAuthority authority = userAuthorityRepository.findByUserId(user.getId());
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        String role = authority != null ? authority.getAuthorityName()+"" : "USER";
-        authorities.add(new SimpleGrantedAuthority(role));
-        return new User(user.getEmail(), user.getPassword(), authorities);
+        List<UserAuthority> authorities = userAuthorityRepository.findByUserId(user.getId());
+        return new User(user.getEmail(), user.getPassword(),
+                authorities.stream().map(auth -> new SimpleGrantedAuthority(auth.getAuthorityName() + "")).collect(Collectors.toList()));
     }
 
     public UserEntity save(UserDTO userDTO) {
@@ -58,16 +54,15 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + email);
         }
-        UserAuthority authority = userAuthorityRepository.findByUserId(user.getId());
-
+        List<UserAuthority> authorities = userAuthorityRepository.findByUserId(user.getId());
+        String role = authorities.size() >0 ? authorities.get(0).getAuthorityName() :"USER";
         LoggedInUser loggedInUser = new LoggedInUser();
         loggedInUser.setEmail(user.getEmail());
         loggedInUser.setDeviceType(user.getDeviceType());
         loggedInUser.setFcmToken(user.getFcmToken());
         loggedInUser.setUserId(user.getId());
-        if (authority != null) {
-            loggedInUser.setRole(authority.getAuthorityName());
-        }
+        //todo bug in the below logic - need to sort out.
+        loggedInUser.setRole(role);
         loggedInUser.setFirstName(user.getFirstname());
         loggedInUser.setLastName(user.getLastname());
 

@@ -1,20 +1,20 @@
 package com.ecommerce;
 
 public class Status {
-    private String status;
+    private boolean success;
     private String message;
 
-    public Status(String status, String message) {
-        this.status = status;
+    public Status(boolean success, String message) {
+        this.success = success;
         this.message = message;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getSuccess() {
+        return success;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getMessage() {

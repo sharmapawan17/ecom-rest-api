@@ -9,5 +9,5 @@ import java.util.List;
 @Repository("userAuthorityRepository")
 public interface UserAuthorityRepository extends JpaRepository<UserAuthority, Long> {
 
-    UserAuthority findByUserId(Long id);
+    List<UserAuthority> findByUserId(Long id);
 }

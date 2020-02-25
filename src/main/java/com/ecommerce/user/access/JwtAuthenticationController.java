@@ -41,7 +41,7 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         loggedInUser.setAccessToken(token);
         return ResponseEntity.ok(
-                new ResponseWithStatus(new Status("success", "Request completed successfully"), loggedInUser));
+                new ResponseWithStatus(new Status(true, "Request completed successfully"), loggedInUser));
     }
 
     private void authenticate(String username, String password) throws Exception {
