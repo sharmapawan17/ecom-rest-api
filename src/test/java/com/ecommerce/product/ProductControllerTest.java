@@ -61,7 +61,7 @@ class ProductControllerTest {
 
             InputStream in = new FileInputStream(new File("C:\\Users\\Kishore\\IdeaProjects\\ecom-rest-api\\src\\test\\resources\\images\\samsungs10.jpg"));
             MockMultipartFile file = new MockMultipartFile("files", in);
-            request.setImageFiles(new MultipartFile[] {file});
+//            request.setImageFiles(new MultipartFile[] {file});
 
             HttpEntity<ProductRequest> entity = new HttpEntity<>(request, headers);
 

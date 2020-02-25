@@ -1,5 +1,7 @@
 package com.ecommerce.user.access;
 
+import com.ecommerce.ResponseWithStatus;
+import com.ecommerce.Status;
 import com.ecommerce.jwt.JwtRequest;
 import com.ecommerce.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,8 @@ public class JwtAuthenticationController {
         // todo save deviceToken and deviceType into the database
         final String token = jwtTokenUtil.generateToken(userDetails);
         loggedInUser.setAccessToken(token);
-        return ResponseEntity.ok(loggedInUser);
+        return ResponseEntity.ok(
+                new ResponseWithStatus(new Status("success", "Request completed successfully"), loggedInUser));
     }
 
     private void authenticate(String username, String password) throws Exception {
