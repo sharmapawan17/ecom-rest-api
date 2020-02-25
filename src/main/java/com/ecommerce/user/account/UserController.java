@@ -1,5 +1,7 @@
 package com.ecommerce.user.account;
 
+import com.ecommerce.ResponseWithStatus;
+import com.ecommerce.Status;
 import com.ecommerce.user.access.AuthorityTypes;
 import com.ecommerce.user.access.JwtUserDetailsService;
 import com.ecommerce.user.access.UserAuthorityRequest;
@@ -37,11 +39,12 @@ public class UserController {
 
     @PostMapping("/authority")
     public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) {
-        return ResponseEntity.ok(userService.save(authorityTypes));
+        return ResponseEntity.ok(new ResponseWithStatus(new Status("success", "User registered successfully"),
+                userService.save(authorityTypes)));
     }
 
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
-        return ResponseEntity.ok(userService.saveRole(userAuthorityRequest));
+        return ResponseEntity.ok(new ResponseWithStatus(new Status("success", "role created successfully"),userService.saveRole(userAuthorityRequest)));
     }
 }
