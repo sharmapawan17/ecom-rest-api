@@ -35,8 +35,9 @@ public class JwtAuthenticationController {
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         LoggedInUser loggedInUser = userDetailsService.getUserDetails(authenticationRequest.getEmail());
+        // todo save deviceToken and deviceType into the database
         final String token = jwtTokenUtil.generateToken(userDetails);
-        loggedInUser.setToken(token);
+        loggedInUser.setAccessToken(token);
         return ResponseEntity.ok(loggedInUser);
     }
 

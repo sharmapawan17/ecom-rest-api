@@ -1,22 +1,39 @@
 package com.ecommerce.user.access;
 
 
-import java.util.List;
-
 public class LoggedInUser {
+    private String firstName;
+    private String lastName;
     private String email;
     private String fcmToken;
     private String deviceType;
     private long userId;
-    private List<String> roles;
-    private String token;
+    private String role;
+    private String accessToken;
 
-    public String getToken() {
-        return token;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getEmail() {
@@ -51,11 +68,11 @@ public class LoggedInUser {
         this.userId = userId;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 }
