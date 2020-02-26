@@ -8,16 +8,6 @@ public class JwtRequest implements Serializable {
     private String deviceType;
     private String fcmToken;
 
-    //need default constructor for JSON Parsing
-    public JwtRequest() {
-
-    }
-
-    public JwtRequest(String email, String password) {
-        this.setEmail(email);
-        this.setPassword(password);
-    }
-
     public String getDeviceType() {
         return deviceType;
     }

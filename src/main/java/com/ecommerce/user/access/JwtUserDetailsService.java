@@ -1,5 +1,6 @@
 package com.ecommerce.user.access;
 
+import com.ecommerce.jwt.JwtRequest;
 import com.ecommerce.jwt.UserAuthorityRepository;
 import com.ecommerce.user.account.UserDTO;
 import com.ecommerce.user.account.UserEntity;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,5 +74,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     public void deActivateUser(String email) {
         UserEntity entity = userRepository.findByEmail(email);
         userRepository.delete(entity);
+    }
+
+    @Transactional
+    public void updateByEmail(JwtRequest jwtRequest) {
+        userRepository.updateFcmTokenAndDeviceType(jwtRequest.getFcmToken(), jwtRequest.getDeviceType(), jwtRequest.getEmail());
     }
 }

@@ -27,15 +27,15 @@ public class UserController {
     @PostMapping(value = "/deactivate")
     public ResponseEntity<?> deactivate(String email) {
         userDetailsService.deActivateUser(email);
-        return ResponseEntity.ok("Complete the request");
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true,"Request completed successfully"), null));
     }
 
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
         UserEntity userEntity = userDetailsService.save(userDTO);
-
-        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "User registered successfully"),
-                userDTO));
+        return ResponseEntity.ok(new ResponseWithStatus(
+                new Status(true, "User registered successfully"), userEntity)
+        );
     }
 
     @PostMapping("/authority")
@@ -46,6 +46,7 @@ public class UserController {
 
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
-        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role created successfully"),userService.saveRole(userAuthorityRequest)));
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role created successfully")
+                ,userService.saveRole(userAuthorityRequest)));
     }
 }
