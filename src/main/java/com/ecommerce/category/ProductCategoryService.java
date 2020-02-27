@@ -7,6 +7,8 @@ import com.ecommerce.category.model.SubCategoryRequest;
 import com.ecommerce.category.repository.ProductCategoryRepository;
 import com.ecommerce.category.repository.ProductSubCategoryRepository;
 import com.ecommerce.storage.StorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,12 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductCategoryService {
+    private static final Logger log = LoggerFactory.getLogger(ProductCategoryService.class);
 
     private static final String CATEGORY_IMAGE_ROOT = "category-images/";
     private static final String SUB_CATEGORY_IMAGE_ROOT = "sub-category-images/";
@@ -46,12 +50,15 @@ public class ProductCategoryService {
         return productCategoryRepository.save(productCategory);
     }
 
+    @Transactional
     public ProductCategoryEntity createProductCategory(CategoryRequest category, MultipartFile file) {
+        log.info("Creating product category with the request : {}", category);
         ProductCategoryEntity entity = new ProductCategoryEntity();
         entity.setCategoryName(category.getCategoryName());
         entity.setActive(true);
         ProductCategoryEntity out = productCategoryRepository.save(entity);
 
+        log.info("Start uploading impage for given category");
         uploadCategoryImageImage(out.getId(), file);
         return null; // todo better handling
     }
@@ -111,8 +118,10 @@ public class ProductCategoryService {
     public String uploadCategoryImageImage(long categoryId, MultipartFile file) {
         String path = CATEGORY_IMAGE_ROOT + categoryId;
         String filename = storageService.store(file, path);
+        log.info("File has been stored at path = {}, filename = {}", path, filename);
         ProductCategoryEntity entity = productCategoryRepository.findById(categoryId).get();
         entity.setImagePath(filename);
+        log.info("inserting filename in product category table");
         productCategoryRepository.save(entity);
         return filename;
     }

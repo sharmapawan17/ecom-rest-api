@@ -34,6 +34,7 @@ public class UserController {
     @Track
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
+        //todo Return proper error when user already exists
         UserEntity userEntity = userDetailsService.save(userDTO);
         return ResponseEntity.ok(new ResponseWithStatus(
                 new Status(true, "User registered successfully"), userEntity)
@@ -43,12 +44,14 @@ public class UserController {
     @Track
     @PostMapping("/authority")
     public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) {
+        //todo proper error when role already exist
         return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "authority created successfully"),
                 userService.save(authorityTypes)));
     }
 
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
+        //todo proper error handling.
         return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role assigned successfully")
                 ,userService.saveRole(userAuthorityRequest)));
     }
