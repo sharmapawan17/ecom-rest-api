@@ -1,5 +1,6 @@
 {
   "name": "Lux",
   "price": "12.90",
-  "description": "Soap product"
+  "description": "Soap product",
+  "subCategoryId": 1
 }

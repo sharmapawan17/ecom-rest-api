@@ -5,22 +5,23 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user_authority")
-@IdClass(UserAuthorityId.class)
-public class UserAuthority implements Serializable {
+public class UserAuthority {
 
     @Id
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "user_id", unique = true)
     private long userId;
-    @Id
     @Column(name = "authority_name")
     private String authorityName;
 
-    public UserAuthority(long userId, String authorityName) {
-        this.userId = userId;
-        this.authorityName = authorityName;
+    public long getId() {
+        return id;
     }
 
-    public UserAuthority() {
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getUserId() {

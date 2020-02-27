@@ -2,6 +2,7 @@ package com.ecommerce.user.account;
 
 import com.ecommerce.ResponseWithStatus;
 import com.ecommerce.Status;
+import com.ecommerce.aspect.Track;
 import com.ecommerce.user.access.AuthorityTypes;
 import com.ecommerce.user.access.JwtUserDetailsService;
 import com.ecommerce.user.access.UserAuthorityRequest;
@@ -30,6 +31,7 @@ public class UserController {
         return ResponseEntity.ok(new ResponseWithStatus(new Status(true,"Request completed successfully"), null));
     }
 
+    @Track
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
         UserEntity userEntity = userDetailsService.save(userDTO);
@@ -38,6 +40,7 @@ public class UserController {
         );
     }
 
+    @Track
     @PostMapping("/authority")
     public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) {
         return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "authority created successfully"),
@@ -46,7 +49,7 @@ public class UserController {
 
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
-        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role created successfully")
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role assigned successfully")
                 ,userService.saveRole(userAuthorityRequest)));
     }
 }

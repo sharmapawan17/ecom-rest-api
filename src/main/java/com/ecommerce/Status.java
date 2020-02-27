@@ -1,5 +1,8 @@
 package com.ecommerce;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Status {
     private boolean success;
     private String message;

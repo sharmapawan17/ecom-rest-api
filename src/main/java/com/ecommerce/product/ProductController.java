@@ -43,9 +43,10 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAuthority('APP_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product createProduct(@RequestPart ProductRequest product,
                                  @RequestPart(required = false) MultipartFile [] files) {
+
         Product out = productService.saveProduct(product);
         handleFileUpload(out.getId(), files);
         return out;
@@ -67,7 +68,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/{id}/uploadimage")
-    @PreAuthorize("hasAuthority('APP_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<ProductImageEntity> handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files) {
         String path = PRODUCT_IMAGES_LOCATION + id;
         List<ProductImageEntity> outList = new ArrayList<>();

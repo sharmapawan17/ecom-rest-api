@@ -6,6 +6,7 @@ import com.ecommerce.user.access.AuthorityTypes;
 import com.ecommerce.user.access.AuthorityTypesRepository;
 import com.ecommerce.user.access.UserAuthority;
 import com.ecommerce.user.access.UserAuthorityRequest;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,14 @@ public class UserService {
         if (authorityTypes == null) {
             throw new DatabaseException("DB_003", "Invalid Role");
         }
-        return userAuthorityRepository.save(new UserAuthority(userEntity.getId(), authorityTypes.getName()));
+        UserAuthority userAuthority = new UserAuthority();
+        userAuthority.setUserId(userEntity.getId());
+        userAuthority.setAuthorityName(authorityTypes.getName());
+        try {
+            userAuthority = userAuthorityRepository.save(userAuthority);
+        }catch (ConstraintViolationException e){
+            throw new DatabaseException("DB_ROLE_CREATION_FAILED", "User already has a role assigned - can not assign two roles at a time");
+        }
+        return userAuthority;
     }
 }
