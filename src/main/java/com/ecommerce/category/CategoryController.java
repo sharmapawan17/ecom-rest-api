@@ -1,5 +1,6 @@
 package com.ecommerce.category;
 
+import com.ecommerce.aspect.Track;
 import com.ecommerce.category.entity.ProductCategoryEntity;
 import com.ecommerce.category.entity.ProductSubCategoryEntity;
 import com.ecommerce.category.model.CategoryRequest;
@@ -42,6 +43,7 @@ public class CategoryController {
         return productCategoryService.getOneProductCategoryById(categoryId);
     }
 
+    @Track
     @PostMapping
     public ProductCategoryEntity createCategory(
             CategoryRequest category, @RequestParam("file") MultipartFile file) {

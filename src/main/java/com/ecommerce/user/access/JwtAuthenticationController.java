@@ -1,7 +1,11 @@
 package com.ecommerce.user.access;
 
+import com.ecommerce.ResponseWithStatus;
+import com.ecommerce.Status;
+import com.ecommerce.aspect.Track;
 import com.ecommerce.jwt.JwtRequest;
 import com.ecommerce.jwt.JwtTokenUtil;
+import com.ecommerce.user.account.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +30,7 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Track
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
@@ -35,9 +40,17 @@ public class JwtAuthenticationController {
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         LoggedInUser loggedInUser = userDetailsService.getUserDetails(authenticationRequest.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        loggedInUser.setToken(token);
-        return ResponseEntity.ok(loggedInUser);
+
+        // In case user's fcmToken or deviceType is different than what we have in database, we need to update it
+        if (authenticationRequest.getFcmToken() != loggedInUser.getFcmToken()
+            || authenticationRequest.getDeviceType() != loggedInUser.getFcmToken()) {
+            userDetailsService.updateByEmail(authenticationRequest);
+        }
+
+        final String generateToken = jwtTokenUtil.generateToken(userDetails);
+        loggedInUser.setAccessToken(generateToken);
+        return ResponseEntity.ok(
+                new ResponseWithStatus(new Status(true, "Request completed successfully"), loggedInUser));
     }
 
     private void authenticate(String username, String password) throws Exception {

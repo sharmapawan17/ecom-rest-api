@@ -1,5 +1,6 @@
 package com.ecommerce.user.access;
 
+import com.ecommerce.jwt.JwtRequest;
 import com.ecommerce.jwt.UserAuthorityRepository;
 import com.ecommerce.user.account.UserDTO;
 import com.ecommerce.user.account.UserEntity;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,13 +57,16 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + email);
         }
         List<UserAuthority> authorities = userAuthorityRepository.findByUserId(user.getId());
-
+        String role = authorities.size() >0 ? authorities.get(0).getAuthorityName() :"USER";
         LoggedInUser loggedInUser = new LoggedInUser();
         loggedInUser.setEmail(user.getEmail());
         loggedInUser.setDeviceType(user.getDeviceType());
         loggedInUser.setFcmToken(user.getFcmToken());
         loggedInUser.setUserId(user.getId());
-        loggedInUser.setRoles(authorities.stream().map(auth -> auth.getAuthorityName()).collect(Collectors.toList()));
+        //todo bug in the below logic - need to sort out.
+        loggedInUser.setRole(role);
+        loggedInUser.setFirstName(user.getFirstname());
+        loggedInUser.setLastName(user.getLastname());
 
         return loggedInUser;
     }
@@ -69,5 +74,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     public void deActivateUser(String email) {
         UserEntity entity = userRepository.findByEmail(email);
         userRepository.delete(entity);
+    }
+
+    @Transactional
+    public void updateByEmail(JwtRequest jwtRequest) {
+        userRepository.updateFcmTokenAndDeviceType(jwtRequest.getFcmToken(), jwtRequest.getDeviceType(), jwtRequest.getEmail());
     }
 }

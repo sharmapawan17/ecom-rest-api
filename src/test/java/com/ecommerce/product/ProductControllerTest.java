@@ -19,9 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -64,7 +61,7 @@ class ProductControllerTest {
 
             InputStream in = new FileInputStream(new File("C:\\Users\\Kishore\\IdeaProjects\\ecom-rest-api\\src\\test\\resources\\images\\samsungs10.jpg"));
             MockMultipartFile file = new MockMultipartFile("files", in);
-            request.setImageFiles(new MultipartFile[] {file});
+//            request.setImageFiles(new MultipartFile[] {file});
 
             HttpEntity<ProductRequest> entity = new HttpEntity<>(request, headers);
 
@@ -114,7 +111,7 @@ class ProductControllerTest {
         request.setEmail("test@gmail.com");
         request.setPassword("12345");
         ResponseEntity<LoggedInUser> responseEntity = restTemplate.postForEntity(HOST + port + "/authenticate", request, LoggedInUser.class);
-        token = responseEntity.getBody().getToken();
+        token = responseEntity.getBody().getAccessToken();
         assertNotNull(token);
     }
 }

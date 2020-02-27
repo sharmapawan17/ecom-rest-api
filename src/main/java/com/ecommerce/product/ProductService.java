@@ -80,12 +80,16 @@ public class ProductService {
         product.setSubCategoryId(subCategoryEntity.getId());
         product.setUnitOfMeasure(productRequest.getUnitOfMeasure());
         product.setPrice(productRequest.getPrice());
-        product.setOffer(Double.valueOf(productRequest.getOffer())); // todo need to do proper validation on input amount
-        product.setOfferPrice(Double.valueOf(productRequest.getOfferPrice())); // todo need to do proper validation on input amount
+        product.setOffer(getSafeDouble(productRequest.getOffer()));
+        product.setOfferPrice(getSafeDouble(productRequest.getOfferPrice()));
         product.setType(productRequest.getType());
         product.setAdditionalInfo(productRequest.getAdditionalInfo());
 
         return productRepository.save(product);
+    }
+
+    private Double getSafeDouble(String offerPrice) {
+        return offerPrice == null ? null : Double.valueOf(offerPrice);
     }
 
     public ProductImageEntity addProductImage(Long id, String filename) {

@@ -1,5 +1,8 @@
 package com.ecommerce.user.account;
 
+import com.ecommerce.ResponseWithStatus;
+import com.ecommerce.Status;
+import com.ecommerce.aspect.Track;
 import com.ecommerce.user.access.AuthorityTypes;
 import com.ecommerce.user.access.JwtUserDetailsService;
 import com.ecommerce.user.access.UserAuthorityRequest;
@@ -25,23 +28,31 @@ public class UserController {
     @PostMapping(value = "/deactivate")
     public ResponseEntity<?> deactivate(String email) {
         userDetailsService.deActivateUser(email);
-        return ResponseEntity.ok("Complete the request");
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true,"Request completed successfully"), null));
     }
 
+    @Track
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO) {
+        //todo Return proper error when user already exists
         UserEntity userEntity = userDetailsService.save(userDTO);
-
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(new ResponseWithStatus(
+                new Status(true, "User registered successfully"), userEntity)
+        );
     }
 
+    @Track
     @PostMapping("/authority")
     public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) {
-        return ResponseEntity.ok(userService.save(authorityTypes));
+        //todo proper error when role already exist
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "authority created successfully"),
+                userService.save(authorityTypes)));
     }
 
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
-        return ResponseEntity.ok(userService.saveRole(userAuthorityRequest));
+        //todo proper error handling.
+        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role assigned successfully")
+                ,userService.saveRole(userAuthorityRequest)));
     }
 }

@@ -2,11 +2,11 @@ package com.ecommerce.exception;
 
 public class Error {
     private String errorCode;
-    private String errorMessage;
+    private String message;
 
-    public Error(String errorCode, String errorMessage) {
+    public Error(String errorCode, String message) {
         this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 
     public String getErrorCode() {
@@ -17,11 +17,11 @@ public class Error {
         this.errorCode = errorCode;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

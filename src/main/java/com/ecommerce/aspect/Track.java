@@ -5,6 +5,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
 @Documented
-public @interface TrackTime {
+public @interface Track {
     boolean enabled() default true;
 }

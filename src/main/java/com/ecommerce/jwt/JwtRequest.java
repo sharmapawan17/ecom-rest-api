@@ -5,15 +5,23 @@ import java.io.Serializable;
 public class JwtRequest implements Serializable {
     private String email;
     private String password;
+    private String deviceType;
+    private String fcmToken;
 
-    //need default constructor for JSON Parsing
-    public JwtRequest() {
-
+    public String getDeviceType() {
+        return deviceType;
     }
 
-    public JwtRequest(String email, String password) {
-        this.setEmail(email);
-        this.setPassword(password);
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getEmail() {
