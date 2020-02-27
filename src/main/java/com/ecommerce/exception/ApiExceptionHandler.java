@@ -16,14 +16,14 @@ public class ApiExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(ApiExceptionHandler.class);
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception ex) {
-        log.error(ex.getMessage());
+        ex.printStackTrace();
         return ResponseEntity.ok(
                 new ResponseWithStatus(new Status(false, ex.getMessage(), MDC.get(CORRELATION_ID)), null));
     }
 
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity handleException(DatabaseException ex) {
-        log.error(ex.getMessage());
+        ex.printStackTrace();
         return ResponseEntity.ok(new ResponseWithStatus(new Status(false, ex.getMessage(), MDC.get(CORRELATION_ID)), null));
     }
 }
