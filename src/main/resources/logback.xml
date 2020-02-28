@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="LOG_PATTERN" value="[%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %cyan(%logger{35}).%M] -%yellow(CORRELATION_ID) = %X{CORRELATION_ID}, %msg%n" />
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>
-                [%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %cyan(%logger{35}).%M] -
-                %yellow(CORRELATION_ID) = %X{CORRELATION_ID}, %msg%n
-            </pattern>
+            <pattern> ${LOG_PATTERN} </pattern>
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -21,8 +20,7 @@
             <maxFileSize>5MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %cyan(%logger{35}).%M] -
-                %yellow(CORRELATION_ID) = %X{CORRELATION_ID}, %msg%n</pattern>
+            <pattern> ${LOG_PATTERN} </pattern>
         </encoder>
     </appender>
 
