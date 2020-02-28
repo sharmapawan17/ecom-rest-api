@@ -8,7 +8,20 @@
             </pattern>
         </encoder>
     </appender>
-    <root level="info">
-        <appender-ref ref="STDOUT"/>
+    <appender name="roll-by-size" class="ch.qos.logback.core.FileAppender">
+        <param name="file" value="/home/ec2-user/logs/ecommerce.log" />
+        <param name="MaxFileSize" value="5MB" />
+        <param name="MaxBackupIndex" value="2" />
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                [%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %cyan(%logger{35}).%M] -
+                %yellow(CORRELATION_ID) = %X{CORRELATION_ID}, %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <root level="debug">
+<!--        <appender-ref ref="STDOUT"/>-->
+        <appender-ref ref="roll-by-size" />
     </root>
 </configuration>
