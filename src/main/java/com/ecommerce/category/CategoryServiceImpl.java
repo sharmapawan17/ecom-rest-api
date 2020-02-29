@@ -6,6 +6,7 @@ import com.ecommerce.category.model.CategoryRequest;
 import com.ecommerce.category.model.SubCategoryRequest;
 import com.ecommerce.category.repository.ProductCategoryRepository;
 import com.ecommerce.category.repository.ProductSubCategoryRepository;
+import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ProductSubCategoryEntity getSubCategoryById(long subCategoryId) {
-        ProductSubCategoryEntity entity =  productSubCategoryRepository.findById(subCategoryId).get();
+        ProductSubCategoryEntity entity = productSubCategoryRepository.findById(subCategoryId).get();
         entity.setImage(hostAddress+"/categories/subcategory/image/"+entity.getId());
         return entity;
     }
@@ -228,12 +230,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(long categoryId) {
-        // todo delete the image from file system
+        try{
         productCategoryRepository.deleteById(categoryId);
+        } catch (NoSuchElementException e) {
+            throw new DatabaseException("CATEGORY_NOT_PRESENT_ERROR", "Given category id is not present in the system");
+        }
+        // todo delete the image from file system
     }
 
     public void deleteSubCategory(long subCategoryId) {
+        try{
+            productSubCategoryRepository.deleteById(subCategoryId);
+        } catch (NoSuchElementException e) {
+            throw new DatabaseException("SUBCATEGORY_NOT_PRESENT_ERROR", "Given sub category id is not present in the system");
+        }
         // todo delete the image from file system
-        productSubCategoryRepository.deleteById(subCategoryId);
     }
 }
