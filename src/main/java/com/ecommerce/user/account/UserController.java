@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @RequestMapping("/user")
@@ -44,17 +45,21 @@ public class UserController {
 
     @Track
     @PostMapping("/authority")
-    public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) {
+    public ResponseEntity<?> createAuthority(@RequestBody AuthorityTypes authorityTypes) throws Exception {
         //todo proper error when role already exist
-        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "authority created successfully"),
-                userService.save(authorityTypes)));
+
+            return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "authority created successfully"),
+                    userService.save(authorityTypes)));
+
     }
 
     @Track
     @PostMapping("/role")
-    public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
+    public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) throws Exception {
         //todo proper error handling.
-        return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role assigned successfully")
-                ,userService.saveRole(userAuthorityRequest)));
+
+            return ResponseEntity.ok(new ResponseWithStatus(new Status(true, "role assigned successfully")
+                    , userService.saveRole(userAuthorityRequest)));
+
     }
 }

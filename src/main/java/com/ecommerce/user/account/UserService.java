@@ -8,6 +8,7 @@ import com.ecommerce.user.access.UserAuthority;
 import com.ecommerce.user.access.UserAuthorityRequest;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +24,8 @@ public class UserService {
         AuthorityTypes out = null;
         try {
             out = authorityTypesRepository.save(authorityTypes);
-        } catch (Exception e) {
-            throw new DatabaseException("DB_001", e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("DB_001", "Authority already exists.");
         }
         return out;
     }
