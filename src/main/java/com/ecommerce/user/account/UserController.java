@@ -25,6 +25,7 @@ public class UserController {
     @Autowired
     private AddressService addressService;
 
+    @Track
     @PostMapping(value = "/deactivate")
     public ResponseEntity<?> deactivate(String email) {
         userDetailsService.deActivateUser(email);
@@ -49,6 +50,7 @@ public class UserController {
                 userService.save(authorityTypes)));
     }
 
+    @Track
     @PostMapping("/role")
     public ResponseEntity<?> createRole(@RequestBody UserAuthorityRequest userAuthorityRequest) {
         //todo proper error handling.

@@ -1,5 +1,6 @@
 package com.ecommerce.order;
 
+import com.ecommerce.aspect.Track;
 import com.ecommerce.service.EcommerceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;
@@ -22,16 +23,19 @@ public class OrderController {
         binder.addValidators(orderValidator);
     }
 
+    @Track
     @GetMapping
     public List<Order> index() {
         return ecommerceService.getOrders();
     }
 
+    @Track
     @GetMapping("/{id}")
     public Order get(@PathVariable("id") long id) {
         return ecommerceService.getOrder(id);
     }
 
+    @Track
     @PostMapping
     public Order create(@RequestBody @Valid Order order) {
         if (order.getItems() != null) {

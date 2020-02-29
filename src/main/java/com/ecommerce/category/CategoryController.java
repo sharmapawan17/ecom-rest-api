@@ -32,6 +32,7 @@ public class CategoryController {
         binder.addValidators(groupValidator);
     }
 
+    @Track
     @GetMapping
     public List<ProductCategoryEntity> allCategories() {
         List<ProductCategoryEntity> list = categoryServiceImpl.getAllCategories();
@@ -44,11 +45,13 @@ public class CategoryController {
         return list;
     }
 
+    @Track
     @GetMapping("/{categoryId}")
     public ProductCategoryEntity getOneProductCategory(@PathVariable("categoryId") long categoryId) {
         return categoryServiceImpl.getCategoryById(categoryId);
     }
 
+    @Track
     @GetMapping("subcategory/{subCategoryId}")
     public ProductSubCategoryEntity getOneProductSubCategory(@PathVariable("subCategoryId") long subCategoryId) {
         return categoryServiceImpl.getSubCategoryById(subCategoryId);
@@ -61,6 +64,7 @@ public class CategoryController {
         return categoryServiceImpl.createCategory(category, file);
     }
 
+    @Track
     @PostMapping("/subcategory")
     public ProductSubCategoryEntity createSubCategory(
             SubCategoryRequest subCategoryRequest,
@@ -68,6 +72,7 @@ public class CategoryController {
         return categoryServiceImpl.createSubCategory(subCategoryRequest, file);
     }
 
+    @Track
     @PostMapping("/{categoryId}")
     public ProductCategoryEntity updateCategory(@PathVariable(value = "categoryId") long categoryId,
                                                 CategoryRequest categoryRequest,
@@ -76,6 +81,7 @@ public class CategoryController {
         return categoryServiceImpl.updateCategory(categoryId, categoryRequest, file);
     }
 
+    @Track
     @PostMapping("/subcategory/{subCategoryId}")
     public ProductSubCategoryEntity editSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId,
                                                     SubCategoryRequest subCategoryRequest,
@@ -83,23 +89,27 @@ public class CategoryController {
         return categoryServiceImpl.updateSubCategory(subCategoryId, subCategoryRequest, file);
     }
 
+    @Track
     @GetMapping("/image/{categoryId}")
     @ResponseBody
     public ResponseEntity<Resource> serveCategoryImage(@PathVariable("categoryId") long categoryId) {
         return categoryServiceImpl.getCategoryImage(categoryId);
     }
 
+    @Track
     @GetMapping("/subcategory/image/{subCategoryId}")
     @ResponseBody
     public ResponseEntity<Resource> serveSubCategoryImage(@PathVariable("subCategoryId") long subCategoryId) {
         return categoryServiceImpl.getSubCategoryImage(subCategoryId);
     }
 
+    @Track
     @DeleteMapping("/{categoryId}")
     public void deleteCategory(@PathVariable(value = "categoryId") long categoryId) {
         categoryServiceImpl.deleteCategory(categoryId);
     }
 
+    @Track
     @DeleteMapping("/subcategory/{subCategoryId}")
     public void deleteSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId) {
         categoryServiceImpl.deleteSubCategory(subCategoryId);

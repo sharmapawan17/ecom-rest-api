@@ -1,5 +1,6 @@
 package com.ecommerce.product;
 
+import com.ecommerce.aspect.Track;
 import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.entity.ProductImageEntity;
 import com.ecommerce.product.models.ProductRequest;
@@ -42,6 +43,7 @@ public class ProductController {
         binder.addValidators(productValidator);
     }
 
+    @Track
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('ADMIN')")
     public Product createProduct(@RequestPart ProductRequest product,
@@ -52,21 +54,25 @@ public class ProductController {
         return out;
     }
 
+    @Track
     @GetMapping(value = "/{id}")
     public Product get(@PathVariable("id") long id) {
         return productService.getProduct(id);
     }
 
+    @Track
     @GetMapping
     public List<ProductResponse> getAll() {
         return productService.getAllProducts();
     }
 
+    @Track
     @PostMapping(value = "/{id}")
     public Product edit(@PathVariable("id") long id, @RequestBody @Valid ProductRequest product) {
         return productService.updateProduct(id, product);
     }
 
+    @Track
     @PostMapping(value = "/{id}/uploadimage")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<ProductImageEntity> handleFileUpload(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files) {
@@ -80,11 +86,13 @@ public class ProductController {
         return outList;
     }
 
+    @Track
     @GetMapping("/{id}/images")
     public List<ProductImageEntity> viewImages(@PathVariable("id") String productId) {
         return productService.getProductImages(Long.parseLong(productId));
     }
 
+    @Track
     @GetMapping("/image/{id}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable("id") long imageId) {

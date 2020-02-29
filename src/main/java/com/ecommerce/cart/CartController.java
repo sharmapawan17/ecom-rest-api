@@ -1,5 +1,6 @@
 package com.ecommerce.cart;
 
+import com.ecommerce.aspect.Track;
 import com.ecommerce.order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;
@@ -25,28 +26,33 @@ public class CartController {
         binder.addValidators(orderValidator);
     }
 
+    @Track
     @PostMapping("/")
     public String create() {
         return cartService.createNewCart();
     }
 
+    @Track
     @PostMapping("/{id}")
     public String addProduct(@PathVariable("id") String cartId, @RequestBody CartItem cartItem) {
         cartService.addProduct(cartId, cartItem);
         return "OK";
     }
 
+    @Track
     @GetMapping("/{id}")
     public Set<CartItem> getCartItems(@PathVariable("id") String cartId) {
         return cartService.getItems(cartId);
     }
 
+    @Track
     @DeleteMapping("{id}/{product_id}")
     public String removeItem(@PathVariable("id") String cartId, @PathVariable("product_id") String productId) {
         cartService.removeProduct(cartId, productId);
         return "OK";
     }
 
+    @Track
     @PostMapping("{id}/quantity")
     public String setProductQuantity(@PathVariable("id") String cartId, @RequestBody CartItem cartItem) {
         String productId = Long.toString(cartItem.getProductId());
@@ -54,6 +60,7 @@ public class CartController {
         return "OK";
     }
 
+    @Track
     @PostMapping("{id}/order")
     public Order createOrder(@PathVariable("id") String cartId, @RequestBody @Valid Order order) {
         if (order == null) {
