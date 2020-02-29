@@ -21,6 +21,7 @@ public class ProductCategoryEntity {
     private Date createDate;
     @Column(name = "image_path")
     private String imagePath;
+    private String image;
 
     @OneToMany(
             mappedBy = "productCategory",
@@ -43,6 +44,14 @@ public class ProductCategoryEntity {
 
     public void setProductSubCategories(List<ProductSubCategoryEntity> productSubCategories) {
         this.productSubCategories = productSubCategories;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getCategoryName() {

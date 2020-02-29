@@ -23,7 +23,7 @@ public class CategoryController {
     @Autowired
     Validator groupValidator;
     @Autowired
-    private ProductCategoryService productCategoryService;
+    private CategoryService categoryServiceImpl;
     @Autowired
     private StorageService storageService;
 
@@ -32,65 +32,86 @@ public class CategoryController {
         binder.addValidators(groupValidator);
     }
 
+    @Track
     @GetMapping
     public List<ProductCategoryEntity> allCategories() {
-        List<ProductCategoryEntity> list = productCategoryService.getProductCategories();
+        List<ProductCategoryEntity> list = categoryServiceImpl.getAllCategories();
         return list;
     }
 
+//    @GetMapping("/subcategories") // todo this API is probably not needed?
+    public List<ProductSubCategoryEntity> allSubCategories() {
+        List<ProductSubCategoryEntity> list = categoryServiceImpl.getAllSubCategories();
+        return list;
+    }
+
+    @Track
     @GetMapping("/{categoryId}")
     public ProductCategoryEntity getOneProductCategory(@PathVariable("categoryId") long categoryId) {
-        return productCategoryService.getOneProductCategoryById(categoryId);
+        return categoryServiceImpl.getCategoryById(categoryId);
+    }
+
+    @Track
+    @GetMapping("subcategory/{subCategoryId}")
+    public ProductSubCategoryEntity getOneProductSubCategory(@PathVariable("subCategoryId") long subCategoryId) {
+        return categoryServiceImpl.getSubCategoryById(subCategoryId);
     }
 
     @Track
     @PostMapping
     public ProductCategoryEntity createCategory(
             CategoryRequest category, @RequestParam("file") MultipartFile file) {
-        return productCategoryService.createProductCategory(category, file);
+        return categoryServiceImpl.createCategory(category, file);
     }
 
-    @PostMapping("/{categoryId}")
-    public ProductCategoryEntity editCategory(@PathVariable(value = "categoryId") long categoryId,
-                                              CategoryRequest categoryRequest,
-                                              @RequestParam(value = "file", required = false) MultipartFile file) {
-
-        return productCategoryService.editProductCategory(categoryId, categoryRequest, file);
-    }
-
-    @GetMapping("/image/{categoryId}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveCategoryImage(@PathVariable("categoryId") long categoryId) {
-        return productCategoryService.serveCategoryImage(categoryId);
-    }
-
-    @GetMapping("/subcategory/image/{subCategoryId}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveSubCategoryImage(@PathVariable("subCategoryId") long subCategoryId) {
-        return productCategoryService.serveSubCategoryImage(subCategoryId);
-    }
-
+    @Track
     @PostMapping("/subcategory")
     public ProductSubCategoryEntity createSubCategory(
             SubCategoryRequest subCategoryRequest,
             @RequestParam(value = "file", required = false) MultipartFile file) {
-        return productCategoryService.createProductSubCategory(subCategoryRequest, file);
+        return categoryServiceImpl.createSubCategory(subCategoryRequest, file);
     }
 
+    @Track
+    @PostMapping("/{categoryId}")
+    public ProductCategoryEntity updateCategory(@PathVariable(value = "categoryId") long categoryId,
+                                                CategoryRequest categoryRequest,
+                                                @RequestParam(value = "file", required = false) MultipartFile file) {
+
+        return categoryServiceImpl.updateCategory(categoryId, categoryRequest, file);
+    }
+
+    @Track
     @PostMapping("/subcategory/{subCategoryId}")
     public ProductSubCategoryEntity editSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId,
                                                     SubCategoryRequest subCategoryRequest,
                                                     @RequestParam(value = "file", required = false) MultipartFile file) {
-        return productCategoryService.editSubCategory(subCategoryId, subCategoryRequest, file);
+        return categoryServiceImpl.updateSubCategory(subCategoryId, subCategoryRequest, file);
     }
 
+    @Track
+    @GetMapping("/image/{categoryId}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveCategoryImage(@PathVariable("categoryId") long categoryId) {
+        return categoryServiceImpl.getCategoryImage(categoryId);
+    }
+
+    @Track
+    @GetMapping("/subcategory/image/{subCategoryId}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveSubCategoryImage(@PathVariable("subCategoryId") long subCategoryId) {
+        return categoryServiceImpl.getSubCategoryImage(subCategoryId);
+    }
+
+    @Track
     @DeleteMapping("/{categoryId}")
     public void deleteCategory(@PathVariable(value = "categoryId") long categoryId) {
-        productCategoryService.deleteCategory(categoryId);
+        categoryServiceImpl.deleteCategory(categoryId);
     }
 
-    @DeleteMapping("/subcategory/{subcategoryId}")
+    @Track
+    @DeleteMapping("/subcategory/{subCategoryId}")
     public void deleteSubCategory(@PathVariable(value = "subCategoryId") long subCategoryId) {
-        productCategoryService.deleteSubCategory(subCategoryId);
+        categoryServiceImpl.deleteSubCategory(subCategoryId);
     }
 }

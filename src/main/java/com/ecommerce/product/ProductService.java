@@ -19,10 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    @Value("${app.host}")
-    private String HOST;
-    @Value("${app.port}")
-    private String PORT;
+    @Value("${app.host.address}")
+    private String hostAddress;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -64,7 +62,8 @@ public class ProductService {
     }
 
     public Product getProduct(long id) {
-        return productRepository.findById(id).get();
+        Product product = productRepository.findById(id).get();
+        return product;
     }
 
     //todo createProduct method does the same right ? remove this then.
@@ -100,9 +99,9 @@ public class ProductService {
     }
 
     public List<ProductImageEntity> getProductImages(long productId) {
-        List<ProductImageEntity> images = productImageRepository.findAll();
+        List<ProductImageEntity> images = productImageRepository.findByProductId(productId);
         images = images.stream().filter(image -> image.getProductId() == productId).collect(Collectors.toList());
-        images.forEach(image -> image.setLink("http://" + HOST + ":" + PORT + "/product/image/" + image.getId()));
+        images.forEach(image -> image.setLink(hostAddress+ "/product/image/" + image.getId()));
         return images;
     }
 

@@ -6,10 +6,12 @@ import com.ecommerce.category.model.CategoryRequest;
 import com.ecommerce.category.model.SubCategoryRequest;
 import com.ecommerce.category.repository.ProductCategoryRepository;
 import com.ecommerce.category.repository.ProductSubCategoryRepository;
+import com.ecommerce.exception.DatabaseException;
 import com.ecommerce.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,12 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
-public class ProductCategoryService {
-    private static final Logger log = LoggerFactory.getLogger(ProductCategoryService.class);
+public class CategoryServiceImpl implements CategoryService {
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private static final String CATEGORY_IMAGE_ROOT = "category-images/";
     private static final String SUB_CATEGORY_IMAGE_ROOT = "sub-category-images/";
@@ -33,13 +37,39 @@ public class ProductCategoryService {
     private ProductSubCategoryRepository productSubCategoryRepository;
     @Autowired
     private StorageService storageService;
+    @Value("${app.host.address}")
+    private String hostAddress;
 
-    public List<ProductCategoryEntity> getProductCategories() {
-        return productCategoryRepository.findAll();
+    @Override
+    public List<ProductCategoryEntity> getAllCategories() {
+        List<ProductCategoryEntity> categories =  productCategoryRepository.findAll();
+        categories.stream().forEach( category -> {
+            category.setImage(hostAddress+"/categories/image/"+ category.getId());
+        });
+        return categories;
     }
 
-    public ProductCategoryEntity getProductCategory(long categoryId) {
-        return productCategoryRepository.findById(categoryId).get();
+    @Override
+    public List<ProductSubCategoryEntity> getAllSubCategories() {
+        List<ProductSubCategoryEntity> subCategories =  productSubCategoryRepository.findAll();
+        subCategories.forEach( subCategory -> {
+            subCategory.setImage(hostAddress+"/categories/subcategory/image/"+subCategory.getId());
+        });
+        return subCategories;
+    }
+
+    @Override
+    public ProductCategoryEntity getCategoryById(long categoryId) {
+        ProductCategoryEntity category = productCategoryRepository.findById(categoryId).get();
+        category.setImage(hostAddress+"/categories/image/"+ category.getId());
+        return category;
+    }
+
+    @Override
+    public ProductSubCategoryEntity getSubCategoryById(long subCategoryId) {
+        ProductSubCategoryEntity entity = productSubCategoryRepository.findById(subCategoryId).get();
+        entity.setImage(hostAddress+"/categories/subcategory/image/"+entity.getId());
+        return entity;
     }
 
     public ProductCategoryEntity getOneProductCategoryById(long categoryId) {
@@ -51,16 +81,36 @@ public class ProductCategoryService {
     }
 
     @Transactional
-    public ProductCategoryEntity createProductCategory(CategoryRequest category, MultipartFile file) {
-        log.info("Creating product category with the request : {}", category);
+    @Override
+    public ProductCategoryEntity createCategory(CategoryRequest categoryRequest, MultipartFile file) {
+        log.info("Creating product category with the request : {}", categoryRequest);
         ProductCategoryEntity entity = new ProductCategoryEntity();
-        entity.setCategoryName(category.getCategoryName());
+        entity.setCategoryName(categoryRequest.getCategoryName());
         entity.setActive(true);
         ProductCategoryEntity out = productCategoryRepository.save(entity);
 
         log.info("Start uploading impage for given category");
         uploadCategoryImageImage(out.getId(), file);
         return null; // todo better handling
+    }
+
+    @Override
+    public ProductCategoryEntity updateCategory(long categoryId, CategoryRequest categoryRequest, MultipartFile file) {
+        ProductCategoryEntity productCategory = getOneProductCategoryById(categoryId);
+
+        if (productCategory == null) {
+            throw new IllegalArgumentException("Invalid Product Category ID");
+        }
+
+        if (categoryRequest.getCategoryName() != null) {
+            productCategory.setCategoryName(categoryRequest.getCategoryName());
+        }
+        productCategoryRepository.save(productCategory);
+        if (file != null) {
+            // todo remove old file first ?
+            uploadCategoryImageImage(productCategory.getId(), file);
+        }
+        return productCategory;
     }
 
     private List<ProductSubCategoryEntity> prepareSubCategoryList(ProductCategoryEntity entity, List<SubCategoryRequest> subCategories) {
@@ -74,7 +124,8 @@ public class ProductCategoryService {
         return list;
     }
 
-    public ProductSubCategoryEntity editSubCategory(long subCategoryId, SubCategoryRequest subCategoryRequest, MultipartFile file) {
+    @Override
+    public ProductSubCategoryEntity updateSubCategory(long subCategoryId, SubCategoryRequest subCategoryRequest, MultipartFile file) {
         ProductSubCategoryEntity entity = productSubCategoryRepository.findById(subCategoryId).get();
 
         if (entity == null) {
@@ -98,7 +149,8 @@ public class ProductCategoryService {
         return out;
     }
 
-    public ProductSubCategoryEntity createProductSubCategory(SubCategoryRequest subCategoryRequest, MultipartFile file) {
+    @Override
+    public ProductSubCategoryEntity createSubCategory(SubCategoryRequest subCategoryRequest, MultipartFile file) {
         ProductSubCategoryEntity subCategoryEntity = new ProductSubCategoryEntity();
         subCategoryEntity.setSubCategoryName(subCategoryRequest.getSubCategoryName());
         subCategoryEntity.setActive(subCategoryRequest.getActive());
@@ -135,7 +187,8 @@ public class ProductCategoryService {
         return filename;
     }
 
-    public ResponseEntity<Resource> serveCategoryImage(long categoryId) {
+    @Override
+    public ResponseEntity<Resource> getCategoryImage(long categoryId) {
 
         String imagePath = productCategoryRepository.findById(categoryId).get().getImagePath();
 
@@ -155,7 +208,8 @@ public class ProductCategoryService {
                 .body(file);
     }
 
-    public ResponseEntity<Resource> serveSubCategoryImage(long subCategoryId) {
+    @Override
+    public ResponseEntity<Resource> getSubCategoryImage(long subCategoryId) {
         String imagePath = productSubCategoryRepository.findById(subCategoryId).get().getImagePath();
 
         String path = SUB_CATEGORY_IMAGE_ROOT + subCategoryId + "/";
@@ -174,31 +228,22 @@ public class ProductCategoryService {
                 .body(file);
     }
 
-    public ProductCategoryEntity editProductCategory(long categoryId, CategoryRequest categoryRequest, MultipartFile file) {
-        ProductCategoryEntity productCategory = getProductCategory(categoryId);
-
-        if (productCategory == null) {
-            throw new IllegalArgumentException("Invalid Product Category ID");
-        }
-
-        if (categoryRequest.getCategoryName() != null) {
-            productCategory.setCategoryName(categoryRequest.getCategoryName());
-        }
-        productCategoryRepository.save(productCategory);
-        if (file != null) {
-            // todo remove old file first ?
-            uploadCategoryImageImage(productCategory.getId(), file);
-        }
-        return productCategory;
-    }
-
+    @Override
     public void deleteCategory(long categoryId) {
-        // todo delete the image from file system
+        try{
         productCategoryRepository.deleteById(categoryId);
+        } catch (NoSuchElementException e) {
+            throw new DatabaseException("CATEGORY_NOT_PRESENT_ERROR", "Given category id is not present in the system");
+        }
+        // todo delete the image from file system
     }
 
     public void deleteSubCategory(long subCategoryId) {
+        try{
+            productSubCategoryRepository.deleteById(subCategoryId);
+        } catch (NoSuchElementException e) {
+            throw new DatabaseException("SUBCATEGORY_NOT_PRESENT_ERROR", "Given sub category id is not present in the system");
+        }
         // todo delete the image from file system
-        productSubCategoryRepository.deleteById(subCategoryId);
     }
 }
