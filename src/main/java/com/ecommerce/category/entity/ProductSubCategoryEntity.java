@@ -20,6 +20,16 @@ public class ProductSubCategoryEntity {
     @JsonBackReference
     private ProductCategoryEntity productCategory;
 
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public ProductCategoryEntity getProductCategory() {
         return productCategory;
     }
